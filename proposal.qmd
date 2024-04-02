@@ -2,7 +2,7 @@
 title: "Proposal title"
 subtitle: "Proposal"
 author: 
-  - name: "Team Name - Team member 1, Team member 2,..."
+  - name: "VizMasters - Team member 1, Team member 2,..."
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"
@@ -22,6 +22,7 @@ execute:
 #| label: load-pkgs
 #| message: false
 library(tidyverse)
+library(janitor)
 ```
 
 ## Dataset
@@ -42,6 +43,51 @@ The "Share of Population with Cancer (Crude)" dataset, through its 6,157 records
 Lastly, the "Share of Population with Cancer by Age" dataset, with its 6,780 records, sheds light on cancer prevalence across various age demographics. This is instrumental in understanding the increased risk associated with aging and identifying which age groups are most vulnerable.
 
 Chosen for their depth and breadth, these datasets collectively provide a detailed picture of cancer's impact globally. They serve as a valuable resource for public health analysis, informing policy-making, and guiding research into effective cancer prevention and treatment strategies. The data likely originates from reputable health data collection entities, including national health ministries and global health organizations, reflecting a standardized and authoritative approach to health data compilation across countries and years.
+
+## Data Wrangling and Displaying the Data
+
+```{r}
+#| label: Data wrangling
+#| message: false
+
+# Loading the datasets
+
+annual_deaths_by_cause <- read_csv("./data/01_annual-number-of-deaths-by-cause.csv")
+cancer_deaths_by_type <- read_csv("./data/02_total-cancer-deaths-by-type.csv")
+cancer_deaths_by_age <- read_csv("./data/04_cancer-death-rates-by-age.csv")
+population_with_cancer_crude <- read_csv("./data/05_share-of-population-with-cancer-crude.csv")
+population_with_cancer_types <- read_csv("./data/06_share-of-population-with-cancer-types.csv")
+population_with_cancer_by_age <- read_csv("./data/07_number-of-people-with-cancer-by-age.csv")
+standardized_death_age_rate_index <- read_csv("./data/11_cancer-deaths-rate-and-age-standardized-rate-index.csv")
+
+# Cleaning them using janitor package
+
+annual_deaths_by_cause <- annual_deaths_by_cause |>
+  clean_names()
+cancer_deaths_by_type <- cancer_deaths_by_type |>
+  clean_names()
+cancer_deaths_by_age <- cancer_deaths_by_age |>
+  clean_names()
+population_with_cancer_crude <- population_with_cancer_crude |>
+  clean_names()
+population_with_cancer_types <- population_with_cancer_types |>
+  clean_names()
+population_with_cancer_by_age <- population_with_cancer_by_age |>
+  clean_names()
+standardized_death_age_rate_index <- standardized_death_age_rate_index |>
+  clean_names()
+
+
+# Displaying the datasets
+
+head(annual_deaths_by_cause)
+head(cancer_deaths_by_type)
+head(cancer_deaths_by_age)
+head(population_with_cancer_crude)
+head(population_with_cancer_types)
+head(population_with_cancer_by_age)
+head(standardized_death_age_rate_index)
+```
 
 ## Questions
 
