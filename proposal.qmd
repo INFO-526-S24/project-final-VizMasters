@@ -2,7 +2,7 @@
 title: "Proposal title"
 subtitle: "Proposal"
 author: 
-  - name: "VizMasters - Team member 1, Team member 2,..."
+  - name: "VizMasters - Siva Rohit, Rohit Vatsava, Surya Vardhan, Monica Kommareddy, Miki, Ajay"
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"
