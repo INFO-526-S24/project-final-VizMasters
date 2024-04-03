@@ -23,6 +23,7 @@ execute:
 #| message: false
 library(tidyverse)
 library(janitor)
+library(kableExtra)
 ```
 
 # Project Overview
@@ -107,10 +108,141 @@ head(population_with_cancer_by_age)
 head(standardized_death_age_rate_index)
 ```
 
-# Questions
+# Questions to Answer
 
 The two questions you want to answer.
 
 # Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+# Timeline
+
+```{r}
+#| label: timeline-table
+#| echo: false
+#| message: false
+
+# Create vectors to represent the tasks
+tasks <- c("Submit project name",
+           "Choose project 2 dataset",
+           "Proposal section -Introduction",
+           "Proposal section -Why this data",
+           "Proposal section -Analysis Goal",
+           "Proposal section - Data Strucure",
+           "Proposal section - Data Wrangling",
+           "Proposal section - Project schedule / Time line",
+           "Submit proposal draft for peer review ",
+           "Implement Peer review comments ",
+           "Resubmit Project Proposal for Final Review  by Professor",
+           "Update About section of Project website",
+           "Incorporate Feedback from Professor",
+           "Publish project 2 website",
+           "Code - Data cleasing",
+           "Code - Data Wrangling",
+           "Code - Plot creation ",
+           "Code - Interpretation",
+           "Internal project review",
+           "Peer Code review",
+           "First draft of presentation",
+           "Final draft of presentation",
+           "Final submission")
+
+# Create vector to represent the deadline
+turn_in <- c("20-Mar-2024",
+             "27-Mar-2024",
+             "02-Apr-2024",
+             "02-Apr-2024",
+             "02-Apr-2024",
+             "02-Apr-2024",
+             "02-Apr-2024",
+             "02-Apr-2024",
+             "03-Apr-2024",
+             "06-Apr-2024",
+             "08-Apr-2024",
+             "14-Apr-2024",
+             "14-Apr-2024",
+             "15-Apr-2024",
+             "23-Apr-2024",
+             "23-Apr-2024",
+             "23-Apr-2024",
+             "23-Apr-2024",
+             "26-Apr-2024",
+             "29-Apr-2024",
+             "03-May-2024",
+             "06-May-2024",
+             "06-May-2024"
+             )
+
+# Create vector to represent ownership
+member <- c("All",
+            "All",
+            "Monica",
+            "Rohit V K",
+            "SRK",
+            "Ajay",
+            "Surya",
+            "Miki",
+            "All",
+            "All",
+            "All",
+            "All",
+            "All",
+            "SRK",
+            "Surya & Ajay",
+            "Rohit V K & Monica",
+            "Miki & SRK",
+            "All",
+            "All",
+            "Peer Team",
+            "All",
+            "All",
+            "All")
+
+# Create vector to represent status
+status <- c("Complete",
+            "Complete",
+            "Complete",
+            "Complete",
+            "Complete",
+            "Complete",
+            "Complete",
+            "Complete",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "")
+
+# Bind the columns
+table_3 <- as.table(cbind(tasks, turn_in, member, status))
+colnames(table_3) <- c("Task", "Deadline", "Ownership", "Status")
+row.names(table_3) <- seq(1:nrow(table_3))
+
+# Generate a nice table with kable
+timeline_table <- kable(table_3, "html") %>%
+  kable_styling(full_width = FALSE)
+
+# Display the table
+timeline_table
+
+
+```
+
+# Implications and Recommendations
+
+# Conclusion
+
+## Additional Points :
+
+# Citations
