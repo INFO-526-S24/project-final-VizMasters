@@ -28,7 +28,7 @@ library(kableExtra)
 
 # Project Overview
 
-The objective of this project is to analyze cancer-related data obtained from the source <https://ourworldindata.org/cancer>. Cancer is a complex disease with significant public health implications, and understanding its epidemiology, trends, and impact is crucial for effective prevention, diagnosis, and treatment strategies.
+Cancer continues to be a significant challenge for global health, impacting mortality rates and quality of life across the world. In 2022 alone, an estimated 9.7 million cancer-related deaths occurred, accompanied by 20 million new cases worldwide. Despite remarkable strides in understanding and managing cancer, the relentless rise in global mortality rates persists unabated. Our project endeavors to tap into the extensive datasets available on cancer from <https://ourworldindata.org/cancer>, curated by Max Roser and Hannah Ritchie. Through meticulous analysis, we aim to conduct a comprehensive examination of cancer's prevalence, risk factors, and global ramifications. By integrating diverse datasets, we seek to unravel the intricate patterns underlying cancer distribution and its multifaceted impacts on diverse populations.
 
 # Reasons for Choosing the Dataset
 
