@@ -25,26 +25,44 @@ library(tidyverse)
 library(janitor)
 ```
 
-## Dataset
+# Project Overview
+
+The objective of this project is to analyze cancer-related data obtained from the source <https://ourworldindata.org/cancer>. Cancer is a complex disease with significant public health implications, and understanding its epidemiology, trends, and impact is crucial for effective prevention, diagnosis, and treatment strategies.
+
+# Reasons for Choosing the Dataset
+
+-   The datasets sourced from <https://ourworldindata.org/cancer> offer comprehensive and reliable information on various aspects of cancer, including mortality rates, types, demographics, and geographic variations.
+
+-   Analyzing these datasets can provide valuable insights into the prevalence, distribution, and risk factors associated with different types of cancer.
+
+-   The availability of multiple datasets allows for a holistic analysis of cancer-related trends and patterns, contributing to a better understanding of the disease's global burden.
+
+# Datasets:
+
+The project utilizes the following CSV files obtained from the provided source, each containing information related to cancer statistics. Below is an overview of the data files:
+
+**01_annual-number-of-deaths-by-cause:** This file contains information on the annual number of deaths attributed to various causes, including cancer and encompasses data from 6,840 records across 35 different health conditions, including neoplasms. It likely includes data on the total number of deaths per year due to cancer, as well as deaths attributed to specific cancer types.
+
+**02_total-cancer-deaths-by-type:** With 6841 records, This file provides details on the total number of cancer-related deaths categorized by cancer type. It may include information such as the number of deaths caused by lung cancer, breast cancer, prostate cancer, etc.
+
+**04_cancer-death-rates-by-age:** Datasets, with 5,472 records, This dataset presents cancer death rates categorized by age groups. It offers insights into how cancer mortality rates vary across different age demographics.
+
+**05_share-of-population-with-cancer-crude**: This file contains data on the crude prevalence of cancer within the population. It likely includes the percentage or proportion of the population diagnosed with cancer, without adjusting for age or other factors.
+
+**06_share-of-population-with-cancer-types:** This dataset provides information on the prevalence of different cancer types within the population. It may include the percentage of individuals diagnosed with specific cancer types such as lung cancer, colorectal cancer, etc.
+
+**07_number-of-people-with-cancer-by-age:** This file contains data on the number of individuals diagnosed with cancer categorized by age groups. It offers insights into the distribution of cancer cases across different age demographics.
+
+**11_cancer-deaths-rate-and-age-standardized-rate-index:** This dataset likely includes information on cancer death rates and age-standardized rate indexes. It may provide insights into trends in cancer mortality rates over time and across different regions, adjusted for age variations in the population.
 
 ```{r}
 #| label: load-dataset
 #| message: false
 ```
 
-The dataset collection provided offers an expansive overview of cancer-related statistics, encapsulating aspects such as incidence, mortality, prevalence across different age groups, and types of cancer. This comprehensive ensemble includes six distinct datasets, each contributing unique insights into the global landscape of cancer.
-
-The first dataset, "Annual Number of Deaths by Cause," encompasses data from 6,840 records across 35 different health conditions, including neoplasms. It spans various countries and regions, offering a broad perspective on global health trends and mortality, thereby serving as a fundamental resource for understanding the impact of cancer in relation to other major health conditions.
-
-Focusing more closely on cancer-specific outcomes, the "Cancer Deaths by Age" and "Cancer Death Rates by Age" datasets, with 5,472 and 6,187 records respectively, break down mortality figures into different age brackets. This distinction is crucial for analyzing how cancer affects various age groups, with the former providing absolute numbers of deaths and the latter offering death rates per 100,000 people, allowing for standardized comparisons across populations.
-
-The "Share of Population with Cancer (Crude)" dataset, through its 6,157 records, reveals the unadjusted proportion of populations diagnosed with cancer, highlighting the general burden of the disease on societies. In contrast, the "Share of Population with Cancer Types" dataset delves into the prevalence of specific cancer types (such as breast, prostate, and lung cancer) within the population, comprising 1,461 records. This granularity aids in identifying which cancers are most prevalent and requires targeted research and intervention strategies.
-
-Lastly, the "Share of Population with Cancer by Age" dataset, with its 6,780 records, sheds light on cancer prevalence across various age demographics. This is instrumental in understanding the increased risk associated with aging and identifying which age groups are most vulnerable.
-
 Chosen for their depth and breadth, these datasets collectively provide a detailed picture of cancer's impact globally. They serve as a valuable resource for public health analysis, informing policy-making, and guiding research into effective cancer prevention and treatment strategies. The data likely originates from reputable health data collection entities, including national health ministries and global health organizations, reflecting a standardized and authoritative approach to health data compilation across countries and years.
 
-## Data Wrangling and Displaying the Data
+# Data Wrangling and Displaying the Data
 
 ```{r}
 #| label: Data wrangling
@@ -89,10 +107,10 @@ head(population_with_cancer_by_age)
 head(standardized_death_age_rate_index)
 ```
 
-## Questions
+# Questions
 
 The two questions you want to answer.
 
-## Analysis plan
+# Analysis plan
 
 -   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
