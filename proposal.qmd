@@ -110,11 +110,35 @@ head(standardized_death_age_rate_index)
 
 # Questions to Answer
 
-The two questions you want to answer.
+### Question 1
+
+What is the contribution of cancer in global mortality?
+
+### Question 2
+
+which age groups are most affected by cancer
+
+### Question 3
+
+which types of cancers are most prevalent worldwide.
 
 # Analysis plan
 
--   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+### Question 1
+
+we will sumarize the total number of deaths from all causes and the total number of
+deaths from all cancers for various years and Calculate the percentage contribution of cancer-related deaths to total deaths. We will use `ggplot2` and `ploty` to create interactive plot to users where they can select years and countries
+
+### 
+Question 2
+
+We will combine the data across all years to find the total or average death rate for
+each age group. Compare these rates across age groups to identify which ones have higher rates
+of cancer-related deaths. We will use bar charts to show cancer deaths by age groups and we will use `ggplot2` and `ploty` to create interactive plot to users where they can select type of cancer they can select and years
+
+### Question 3
+
+we will summarize the number of cases per 100 people for each cancer type. Rank these cancer types based on prevalence to identify the top ones and we will use horizontal bar chart to show different types of cancers and we will use `ggplot` and `ploty` to create interactive plot to the users where they can select different years and also types of cancer to compare
 
 # Timeline
 
