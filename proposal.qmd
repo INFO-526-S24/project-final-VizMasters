@@ -98,13 +98,19 @@ standardized_death_age_rate_index <- standardized_death_age_rate_index |>
 
 
 # Displaying the datasets
-
+print("01_annual-number-of-deaths-by-cause")
 glimpse(annual_deaths_by_cause)
+print("02_total-cancer-deaths-by-type")
 glimpse(cancer_deaths_by_type)
+print("04_cancer-death-rates-by-age")
 glimpse(cancer_deaths_by_age)
+print("05_share-of-population-with-cancer-crude")
 glimpse(population_with_cancer_crude)
+print("06_share-of-population-with-cancer-types")
 glimpse(population_with_cancer_types)
+print("07_number-of-people-with-cancer-by-age")
 glimpse(population_with_cancer_by_age)
+print("11_cancer-deaths-rate-and-age-standardized-rate-index")
 glimpse(standardized_death_age_rate_index)
 ```
 
