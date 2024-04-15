@@ -275,4 +275,6 @@ timeline_table
 
 ### Source of Data :
 
-Global cancer burden growing, amidst mounting need for services. (2024, February 1). https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services
+Global cancer burden growing, amidst mounting need for services. (2024, February 1).
+
+"<https://ourworldindata.org/cancer>".
