@@ -99,13 +99,13 @@ standardized_death_age_rate_index <- standardized_death_age_rate_index |>
 
 # Displaying the datasets
 
-head(annual_deaths_by_cause)
-head(cancer_deaths_by_type)
-head(cancer_deaths_by_age)
-head(population_with_cancer_crude)
-head(population_with_cancer_types)
-head(population_with_cancer_by_age)
-head(standardized_death_age_rate_index)
+glimpse(annual_deaths_by_cause)
+glimpse(cancer_deaths_by_type)
+glimpse(cancer_deaths_by_age)
+glimpse(population_with_cancer_crude)
+glimpse(population_with_cancer_types)
+glimpse(population_with_cancer_by_age)
+glimpse(standardized_death_age_rate_index)
 ```
 
 # Questions to Answer
@@ -266,7 +266,7 @@ timeline_table
 <!-- ## Additional Points : -->
 
 # Citations
+
 ### Source of Data :
 
-
-Global cancer burden growing, amidst mounting need for services. (2024, February 1). https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services 
+Global cancer burden growing, amidst mounting need for services. (2024, February 1). "<https://ourworldindata.org/cancer>"
