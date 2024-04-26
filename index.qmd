@@ -2,7 +2,7 @@
 title: "Cancer"
 subtitle: "INFO 526 - Project Final"
 author: 
-  - name: "VizMasters - Monika, SRK, Surya, Rohit, Ajay and Miki"
+  - name: "VizMasters - Monika, Ajay, Miki, SRK, Surya and Rohit"
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Analyze : Cancers - leading Cause of death globally"
