@@ -1,11 +1,11 @@
 ---
-title: "Cancer"
+title: "Project Title"
 subtitle: "INFO 526 - Project Final"
 author: 
-  - name: "VizMasters - Monika, Ajay, Miki, SRK, Surya and Rohit"
+  - name: "Team name - Team member 1, Team member 2,..."
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Analyze : Cancers - leading Cause of death globally"
+description: "Project description"
 format:
    html:
     code-tools: true

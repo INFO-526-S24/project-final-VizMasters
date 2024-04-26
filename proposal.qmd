@@ -18,7 +18,7 @@ execute:
   warning: false
 ---
 
-```{r, echo = FALSE}
+```{r}
 #| label: load-pkgs
 #| message: false
 library(tidyverse)
@@ -65,7 +65,7 @@ Chosen for their depth and breadth, these datasets collectively provide a detail
 
 # Data Wrangling and Displaying the Data
 
-```{r, echo = FALSE}
+```{r}
 #| label: Data wrangling
 #| message: false
 
@@ -126,15 +126,19 @@ which types of cancers are most prevalent worldwide.
 
 ### Question 1
 
-we will sumarize the total number of deaths from other causes and the total number of deaths from cancers over years and Calculate the percentage contribution of cancer-related deaths to total deaths. We will use `ggplot2` and `plotly` to create interactive plot to users where they can select years and countries
+we will sumarize the total number of deaths from all causes and the total number of
+deaths from all cancers for various years and Calculate the percentage contribution of cancer-related deaths to total deaths. We will use `ggplot2` and `ploty` to create interactive plot to users where they can select years and countries
 
-### Question 2
+### 
+Question 2
 
-We will combine the data over years to find the total or average death rate for each age group. Compare these rates across age groups to identify which ones have higher rates of cancer-related deaths. We will use bar charts to show cancer deaths by age groups and we will use `ggplot2` and `plotly` to create interactive plot to users where they can select type of cancer they can select and years
+We will combine the data across all years to find the total or average death rate for
+each age group. Compare these rates across age groups to identify which ones have higher rates
+of cancer-related deaths. We will use bar charts to show cancer deaths by age groups and we will use `ggplot2` and `ploty` to create interactive plot to users where they can select type of cancer they can select and years
 
 ### Question 3
 
-we will summarize the number of cases per 100 people for each cancer type. Rank these cancer types based on prevalence to identify the top ones and we will use horizontal bar chart to show different types of cancers and we will use `ggplot` and `plotly` to create interactive plot to the users where they can select different years and also types of cancer to compare
+we will summarize the number of cases per 100 people for each cancer type. Rank these cancer types based on prevalence to identify the top ones and we will use horizontal bar chart to show different types of cancers and we will use `ggplot` and `ploty` to create interactive plot to the users where they can select different years and also types of cancer to compare
 
 # Timeline
 
@@ -259,14 +263,10 @@ timeline_table
 
 ```
 
-<!-- # Implications and Recommendations -->
+# Implications and Recommendations
 
-<!-- # Conclusion -->
+# Conclusion
 
-<!-- ## Additional Points : -->
+## Additional Points :
 
 # Citations
-### Source of Data :
-
-
-Global cancer burden growing, amidst mounting need for services. (2024, February 1). https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services 
