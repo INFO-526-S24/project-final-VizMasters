@@ -98,19 +98,13 @@ standardized_death_age_rate_index <- standardized_death_age_rate_index |>
 
 
 # Displaying the datasets
-cat("File name: 01_annual-number-of-deaths-by-cause\n")
+
 glimpse(annual_deaths_by_cause)
-cat("File name: 02_total-cancer-deaths-by-type\n")
 glimpse(cancer_deaths_by_type)
-cat("File name: 04_cancer-death-rates-by-age\n")
 glimpse(cancer_deaths_by_age)
-cat("File name: 05_share-of-population-with-cancer-crude\n")
 glimpse(population_with_cancer_crude)
-cat("File name: 06_share-of-population-with-cancer-types\n")
 glimpse(population_with_cancer_types)
-cat("File name: 07_number-of-people-with-cancer-by-age\n")
 glimpse(population_with_cancer_by_age)
-cat("File name: 11_cancer-deaths-rate-and-age-standardized-rate-index\n")
 glimpse(standardized_death_age_rate_index)
 ```
 
@@ -275,6 +269,4 @@ timeline_table
 
 ### Source of Data :
 
-Global cancer burden growing, amidst mounting need for services. (2024, February 1).
-
-"<https://ourworldindata.org/cancer>".
+Global cancer burden growing, amidst mounting need for services. (2024, February 1). "<https://ourworldindata.org/cancer>"
