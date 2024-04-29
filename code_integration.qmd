@@ -1,0 +1,445 @@
+---
+title: "Cancer"
+subtitle: "INFO 526 - Project Final"
+author: 
+  - name: "VizMasters - Monika, Ajay, Miki, SRK, Surya and Rohit"
+    affiliations:
+      - name: "School of Information, University of Arizona"
+description: "Analyze : Cancers - leading Cause of death globally"
+format:
+   html:
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+editor: visual
+execute:
+  warning: false
+  echo: false
+---
+
+## Abstract
+
+Add project abstract here.
+
+```{r load packages, message= FALSE}
+# Loading Packages
+if (!require("pacman"))
+  iunstall::packages("pacman")
+  
+  pacman::p_load(tidyverse,
+                 here,
+                janitor,
+                scales)
+
+library(tidyverse) 
+library(janitor)
+library(scales)
+
+```
+
+```{r}
+## Functions - Data Wrangling
+
+fun_DataFile_01 <-function()
+{
+
+  # Data File : 01_Annual_Number_Of_death_by_cause ---------------------------------------------------------------------------------------------------------------------------------
+
+  # Loading data
+  data <- read_csv(here("data/01_annual-number-of-deaths-by-cause.csv"))
+  # glimpse(data)
+  
+  # Data Wrangling
+  data <- data |>
+    clean_names() |>
+    rename( country = entity,
+            meningitis = deaths_meningitis_sex_both_age_all_ages_number,
+            alzheimers =   deaths_alzheimers_disease_and_other_dementias_sex_both_age_all_ages_number,
+            parkinsons = deaths_parkinsons_disease_sex_both_age_all_ages_number,
+            nutritional_deficiencies = deaths_nutritional_deficiencies_sex_both_age_all_ages_number,
+            malaria = deaths_malaria_sex_both_age_all_ages_number,
+            drowning = deaths_drowning_sex_both_age_all_ages_number,
+            interpersonal_violence = deaths_interpersonal_violence_sex_both_age_all_ages_number,
+            maternal_disorders = deaths_maternal_disorders_sex_both_age_all_ages_number,
+            hiv_aids =deaths_hiv_aids_sex_both_age_all_ages_number,
+            drug_use_disorders = deaths_drug_use_disorders_sex_both_age_all_ages_number,
+            tuberculosis = deaths_tuberculosis_sex_both_age_all_ages_number,
+            cardiovascular_diseases = deaths_cardiovascular_diseases_sex_both_age_all_ages_number,
+            lower_respiratory_infections = deaths_lower_respiratory_infections_sex_both_age_all_ages_number,
+            neonatal_disorders = deaths_neonatal_disorders_sex_both_age_all_ages_number,
+            alcohol_use_disorders = deaths_alcohol_use_disorders_sex_both_age_all_ages_number, self_harm =
+            deaths_self_harm_sex_both_age_all_ages_number,
+            exposure_to_forces_of_nature = deaths_exposure_to_forces_of_nature_sex_both_age_all_ages_number,
+            diarrheal_diseases = deaths_diarrheal_diseases_sex_both_age_all_ages_number,
+            environmental_heat_and_cold_exposure = deaths_environmental_heat_and_cold_exposure_sex_both_age_all_ages_number,
+            Cancers = deaths_neoplasms_sex_both_age_all_ages_number,
+            conflict_and_terrorism = deaths_conflict_and_terrorism_sex_both_age_all_ages_number,
+            diabetes_mellitus = deaths_diabetes_mellitus_sex_both_age_all_ages_number,
+            chronic_kidney_disease = deaths_chronic_kidney_disease_sex_both_age_all_ages_number, poisonings =
+            deaths_poisonings_sex_both_age_all_ages_number,
+            protein_energy_malnutrition = deaths_protein_energy_malnutrition_sex_both_age_all_ages_number,
+            road_injuries = deaths_road_injuries_sex_both_age_all_ages_number,
+            chronic_respiratory_diseases = deaths_chronic_respiratory_diseases_sex_both_age_all_ages_number,
+            cirrhosis_and_other_chronic_liver_diseases = deaths_cirrhosis_and_other_chronic_liver_diseases_sex_both_age_all_ages_number,
+            digestive_diseases = deaths_digestive_diseases_sex_both_age_all_ages_number,
+            fire_heat_and_hot_substances = deaths_fire_heat_and_hot_substances_sex_both_age_all_ages_number,
+            acute_hepatitis = deaths_acute_hepatitis_sex_both_age_all_ages_number,
+            measles = deaths_measles_sex_both_age_all_ages_number
+            )
+  
+  # glimpse(data)
+   
+  cleaned_data <- data |>
+    select(country, year, meningitis:last_col())|>
+    pivot_longer( cols = meningitis:last_col(),
+                  names_to = "causes_of_death",
+                  values_to = "deaths" )
+  
+  # missing_count <- sum(is.na(cleaned_data))
+  # missing_count
+
+
+    # cleaned_data_new <- cleaned_data |>
+    # filter(year == 2019 & country == "World") |>
+    # arrange(desc(deaths)) |>
+    # mutate(causes_of_death = factor(causes_of_death,
+    #                                 levels = rev(unique(causes_of_death))))
+
+  # glimpse(cleaned_data_new)
+  # head(cleaned_data_new)
+  # print(cleaned_data_new,n = Inf)
+
+  return(cleaned_data)  
+  }
+
+
+fun_DataFile_02 <-function()
+{
+  # Data File : 02_total-cancer-deaths-by-type ---------------------------------------------------------------------------------------------------------------------------------
+  
+  data <- read_csv(here("data/02_total-cancer-deaths-by-type.csv"))
+  # glimpse(data)
+  
+  # Data Wrangling
+  
+  data <- data |>
+    clean_names() |>
+    rename( country = entity,
+            liver_cancer = deaths_liver_cancer_sex_both_age_all_ages_number,
+            kidney_cancer = deaths_kidney_cancer_sex_both_age_all_ages_number
+            )
+  
+  # glimpse(data)
+   
+  cleaned_data <- data |>
+    select(country, year, liver_cancer:last_col())|>
+    pivot_longer( cols = liver_cancer:last_col(),
+                  names_to = "cancertype",
+                  values_to = "deaths" )
+  
+
+  # glimpse(cleaned_data_new)
+  # head(cleaned_data_new)
+  # print(cleaned_data_new,n = Inf)
+
+  return(cleaned_data)  
+  }
+
+```
+
+```{r}
+## Functions - Ploting
+
+# Function : plot_01
+# Plot :  Horizontal bar
+# Data File : 01_Annual_Number_Of_death_by_cause
+
+fun_plot_01_Horizontalbar_DataFile_01 <- function(objdf,intyear,strcountry)
+{
+
+  # cat("Year",intyear, "Country",dQuote(strcountry))
+  strtitle = cat("Causes of death in ",strcountry," in the year ", intyear )
+  print(strtitle)
+
+    df_condition <- objdf |>
+    filter(year == intyear & country == strcountry) |>
+    arrange(desc(deaths)) |>
+    mutate(causes_of_death = factor(causes_of_death,
+                                    levels = rev(unique(causes_of_death))))
+
+  # df_condition <- objdf |>
+  #   filter(year == 2019 & country == "World") |>
+  #   arrange(desc(deaths)) |>
+  #   mutate(causes_of_death = factor(causes_of_death,
+  #                                   levels = rev(unique(causes_of_death))))
+  
+  # glimpse(df_condition)
+
+    # 
+  # Generating the plot
+  plot_01 <- ggplot(data = df_condition, aes(x = causes_of_death,y = deaths / 1e6 )) +
+  geom_bar(stat = "identity", fill = "blue") +
+    geom_text(
+      aes(label = deaths),
+      position = position_dodge(width = 0.9),
+      hjust = -0.1,
+      size = 4
+    ) +
+    scale_y_continuous(labels = label_number(suffix = "M")) +
+    coord_flip() +
+    theme_minimal() +
+    labs(
+      title = strtitle,
+      y = "deaths",
+      x = "Causes of death")
+
+  return(plot_01)
+
+}
+
+
+# Function : plot_02
+# Plot -  Horizontal bar 
+# Data File : 02_total-cancer-deaths-by-type
+
+fun_plot_02_Horizontalbar_DataFile_02 <- function(objdf,intyear,strcountry)
+{
+
+  strtitle = cat("Causes of death by cancers in ",strcountry,"in the year ", intyear )
+
+   df_condition <- objdf |>
+    filter(year == intyear & country == strcountry) |>
+    arrange(desc(deaths)) |>
+    mutate(cancertype = factor(cancertype,
+                                    levels = rev(unique(cancertype))))
+
+  # glimpse(df_condition)
+
+  # Generating the plot
+  plot_02 <- ggplot(data = df_condition, aes(x = cancertype,y = deaths / 1e6 )) +
+  geom_bar(stat = "identity", fill = "blue") +
+    geom_text(
+      aes(label = deaths),
+      position = position_dodge(width = 0.9),
+      hjust = -0.1,
+      size = 4
+    ) +
+    scale_y_continuous(labels = label_number(suffix = "M")) +
+    coord_flip() +
+    theme_minimal() +
+    labs(
+      title = strtitle,
+      y = "deaths",
+      x = "Causes of death")
+
+  return(plot_02)
+
+}
+
+```
+
+## Execution code
+
+```{r}
+
+df_datafile_01 <- fun_DataFile_01()
+
+plot_01<-fun_plot_01_Horizontalbar_DataFile_01(df_datafile_01,2019,"World")
+plot_01
+
+df_datafile_02 <- fun_DataFile_02()
+glimpse(df_datafile_02)
+
+plot_02<-fun_plot_02_Horizontalbar_DataFile_02(df_datafile_02,2019,"World")
+plot_02
+
+```
+
+
+
+```{r label_me_Rohit_K}
+
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(tidyverse)
+library(gganimate)
+
+data_1 <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+data_1 <- data_1 |>
+  rename(Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
+
+ 
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+data_1 <- data_1 |>
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+
+world_data <- merge(world, data_1 , by.x = "name_long", by.y = "Entity")
+
+
+world_data <- world_data |>
+  drop_na(Deaths_Neoplasms)
+
+animated_plot <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
+  labs(title = "Share of population with cancer") +  
+  theme(legend.position = "bottom") +
+  transition_time(Year) +  
+  ease_aes('linear')+
+  theme_void()
+
+gganimate::animate(animated_plot, nframes = 100, fps = 10, end_pause = 10)
+
+
+```
+
+```{r label_me_Rohit_K_2}
+# Load the necessary libraries
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+
+# Read the data
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+# Filter the data and select necessary columns
+filtered_data <- data |> 
+  filter(Year == 2000) |>
+  select(Entity, Year, Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
+
+# Load the world map
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Find mismatches between data Entity and world map names
+mismatches <- setdiff(filtered_data$Entity, world$name)
+
+# If there are mismatches, print them for manual correction
+print("Mismatched country names:")
+print(mismatches)
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+# Merge the corrected data with the world map
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+# Plotting with ggplot
+ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms),color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths")  +
+  labs(title = "Neoplasm Deaths by Country, 2000") +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+```
+
+```{r label_me_SV , fig.width = 16}
+# Loading Packages
+
+library(tidyverse) 
+library(janitor)
+library(scales)
+library(gganimate)
+
+# Loading data
+
+data <- read_csv("https://raw.githubusercontent.com/INFO-526-S24/project-final-VizMasters/main/data/01_annual-number-of-deaths-by-cause.csv")
+
+
+# Data Wrangling
+
+data <- data |> 
+  clean_names() |> 
+  rename( country = entity,
+          Meningitis = deaths_meningitis_sex_both_age_all_ages_number, 
+          Alzheimers =   deaths_alzheimers_disease_and_other_dementias_sex_both_age_all_ages_number,
+          Parkinsons = deaths_parkinsons_disease_sex_both_age_all_ages_number,
+          Nutritional_deficiencies = deaths_nutritional_deficiencies_sex_both_age_all_ages_number, 
+          Malaria = deaths_malaria_sex_both_age_all_ages_number, 
+          Drowning = deaths_drowning_sex_both_age_all_ages_number, 
+          Interpersonal_violence = deaths_interpersonal_violence_sex_both_age_all_ages_number,
+          Maternal_disorders = deaths_maternal_disorders_sex_both_age_all_ages_number, 
+          Hiv_aids =deaths_hiv_aids_sex_both_age_all_ages_number, 
+          Drug_use_disorders = deaths_drug_use_disorders_sex_both_age_all_ages_number, 
+          Tuberculosis = deaths_tuberculosis_sex_both_age_all_ages_number,
+          Cardiovascular_diseases = deaths_cardiovascular_diseases_sex_both_age_all_ages_number,
+          Lower_respiratory_infections = deaths_lower_respiratory_infections_sex_both_age_all_ages_number,
+          Neonatal_disorders = deaths_neonatal_disorders_sex_both_age_all_ages_number,
+          Alcohol_use_disorders = deaths_alcohol_use_disorders_sex_both_age_all_ages_number, Self_harm =
+          deaths_self_harm_sex_both_age_all_ages_number,
+          Exposure_to_forces_of_nature = deaths_exposure_to_forces_of_nature_sex_both_age_all_ages_number,
+          Diarrheal_diseases = deaths_diarrheal_diseases_sex_both_age_all_ages_number,
+          Environmental_heat_and_cold_exposure = deaths_environmental_heat_and_cold_exposure_sex_both_age_all_ages_number,
+          Cancers = deaths_neoplasms_sex_both_age_all_ages_number,
+          Conflict_and_terrorism = deaths_conflict_and_terrorism_sex_both_age_all_ages_number,
+          Diabetes_mellitus = deaths_diabetes_mellitus_sex_both_age_all_ages_number,
+          Kidney_disease = deaths_chronic_kidney_disease_sex_both_age_all_ages_number, 
+          Poisonings =
+          deaths_poisonings_sex_both_age_all_ages_number,
+          Protein_energy_malnutrition = deaths_protein_energy_malnutrition_sex_both_age_all_ages_number,
+          Road_injuries = deaths_road_injuries_sex_both_age_all_ages_number,
+          Respiratory_diseases = deaths_chronic_respiratory_diseases_sex_both_age_all_ages_number,
+          Liver_diseases = deaths_cirrhosis_and_other_chronic_liver_diseases_sex_both_age_all_ages_number,
+          Digestive_diseases = deaths_digestive_diseases_sex_both_age_all_ages_number,
+          Fire_heat_and_hot_substances = deaths_fire_heat_and_hot_substances_sex_both_age_all_ages_number,
+          Acute_hepatitis = deaths_acute_hepatitis_sex_both_age_all_ages_number,
+          Measles = deaths_measles_sex_both_age_all_ages_number 
+          )
+
+# Converting the data to longer format for ploting
+
+cleaned_data <- data |> 
+  select(country, year, Meningitis:last_col())|> 
+  pivot_longer( cols = Meningitis:last_col(), 
+                names_to = "causes_of_death", 
+                values_to = "deaths" )
+
+# Arranging the data
+
+cleaned_data_new <- cleaned_data |>
+  filter(country == "World") |>
+  arrange(year, desc(deaths)) |>
+  mutate(causes_of_death = factor(causes_of_death, 
+                                  levels = rev(unique(causes_of_death))))
+
+# Generating the plot
+
+plot1 <- ggplot(data = cleaned_data_new, aes(y = deaths / 1e6,
+                                             x = causes_of_death,
+                                             fill = if_else(causes_of_death == "Cancers", "Cancers", "Other"))) +
+
+geom_bar(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c("Cancers" = "red", "Other" = "blue")) +
+  scale_y_continuous(labels = label_number(suffix = "M")) +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Causes of death around the world in the year: {frame_time}",
+    y = "Deaths",
+    x = "Causes of death"
+  ) +
+  transition_time(year)
+
+# Animating the plot
+
+animate(plot1, duration = 10,
+        fps = 3,
+        width = 800,
+        height = 600,
+        renderer = gifski_renderer())
+```
