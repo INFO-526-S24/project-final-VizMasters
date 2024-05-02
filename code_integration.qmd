@@ -347,48 +347,83 @@ ggplot() +
 ```
 
 ```{r label_me_monica_1}
-library(rnaturalearthdata)
 library(rnaturalearth)
 library(ggplot2)
 library(sf)
 library(dplyr)
-library(readr)
 library(plotly)
 
+# Read the data
 data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
 
+# Filter the data for the year 2000
 filtered_data <- data %>%
   filter(Year == 2000) %>%
   select(Entity, Year, Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
 
+# Load world map data
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
-mismatches <- setdiff(filtered_data$Entity, world$name)
-
-print("Mismatched country names:")
-print(mismatches)
-
+# Correct mismatched country names
 filtered_data <- filtered_data %>%
-  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
-         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
-         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+  mutate(Entity = case_when(
+    Entity == "Democratic Republic of Congo" ~ "Democratic Republic of the Congo",
+    Entity == "Congo" ~ "Republic of the Congo",
+    Entity == "Russia" ~ "Russian Federation",
+    TRUE ~ as.character(Entity)
+  ))
 
+# Merge world map data with filtered data
 world_data <- merge(world, filtered_data, by.x = "name_long", by.y = "Entity")
 
-p <- ggplot() +
-  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
-  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
-  labs(title = "Share of population with cancer per 100 people, 2000") +
-  theme_void() +
-  theme(legend.position = "none") 
+# Function to create continent-specific maps
+create_continent_map <- function(continent_name) {
+  continent_data <- world_data %>%
+    filter(continent == continent_name)
+  
+  p <- ggplot() +
+    geom_sf(data = continent_data, aes(fill = Deaths_Neoplasms), color = "black", size = 0.5) +
+    scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
+    labs(title = paste("Share of population with cancer per 100 people -", continent_name, "- 2000")) +
+    theme_void() +
+    theme(legend.position = "none")
+  
+  return(p)
+}
 
-p <- ggplotly(p, tooltip = "text")
+# Get unique continent names
+continent_names <- unique(world_data$continent)
 
-p$elementId <- NULL  # Remove elementId to prevent Shiny error
+# Create dropdown menu
+buttons <- list(
+  list(method = "update",
+       args = list(list(visible = list(world_data$continent %in% continent_names))),
+       label = "World")
+)
 
-p %>% layout(legend = list(orientation = "h", y = 0.1))
+for (i in 1:length(continent_names)) {
+  buttons[[i + 1]] <- list(method = "update",
+                           args = list(list(visible = list(world_data$continent == continent_names[i]))),
+                           label = continent_names[i])
+}
 
-p
+updatemenus <- list(
+  list(
+    buttons = buttons,
+    direction = "down",
+    x = 0.01,
+    xanchor = "left",
+    y = 1.15,
+    yanchor = "top"
+  )
+)
+
+# Convert ggplot object to plotly
+continent_plot <- ggplotly(create_continent_map("Asia")) %>%
+  layout(updatemenus = updatemenus)
+
+# Show the continent plot
+continent_plot
 
 ```
 
