@@ -255,8 +255,6 @@ plot_02
 
 ```
 
-
-
 ```{r label_me_Rohit_K}
 
 library(rnaturalearthdata)
@@ -345,6 +343,160 @@ ggplot() +
   labs(title = "Neoplasm Deaths by Country, 2000") +
   theme_void() +
   theme(legend.position = "bottom")
+
+```
+
+```{r label_me_monica_1}
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(plotly)
+
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 2000) %>%
+  select(Entity, Year, Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+mismatches <- setdiff(filtered_data$Entity, world$name)
+
+print("Mismatched country names:")
+print(mismatches)
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data, by.x = "name_long", by.y = "Entity")
+
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
+  labs(title = "Share of population with cancer per 100 people, 2000") +
+  theme_void() +
+  theme(legend.position = "none") 
+
+p <- ggplotly(p, tooltip = "text")
+
+p$elementId <- NULL  # Remove elementId to prevent Shiny error
+
+p %>% layout(legend = list(orientation = "h", y = 0.1))
+
+p
+
+```
+
+```{r label_me_monica_3}
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(plotly)
+
+# Read the data
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+# Filter the data for the year 2000
+filtered_data <- data %>%
+  filter(Year == 2000) %>%
+  select(Entity, Year, Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
+
+# Load world map data
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Identify mismatched country names
+mismatches <- setdiff(filtered_data$Entity, world$name)
+print("Mismatched country names:")
+print(mismatches)
+
+# Correct mismatched country names
+filtered_data <- filtered_data %>%
+  mutate(Entity = case_when(
+    Entity == "Democratic Republic of Congo" ~ "Democratic Republic of the Congo",
+    Entity == "Congo" ~ "Republic of the Congo",
+    Entity == "Russia" ~ "Russian Federation",
+    TRUE ~ as.character(Entity)
+  ))
+
+# Merge world map data with filtered data
+world_data <- merge(world, filtered_data, by.x = "name_long", by.y = "Entity")
+
+# Create a color palette for continents
+continent_colors <- c(
+  "Africa" = "#1f77b4",  # Blue
+  "Asia" = "#ff7f0e",     # Orange
+  "Europe" = "#2ca02c",   # Green
+  "North America" = "#d62728",  # Red
+  "Oceania" = "#9467bd",  # Purple
+  "South America" = "#8c564b"  # Brown
+)
+
+# Plot
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = continent, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_manual(values = continent_colors) +
+  labs(title = "Share of population with cancer per 100 people, 2000") +
+  theme_void() +
+  theme(legend.position = "none")
+
+# Convert ggplot object to plotly
+p <- ggplotly(p, tooltip = "text")
+
+# Remove elementId to prevent Shiny error
+p$elementId <- NULL
+
+# Show plot
+p
+
+```
+
+```{r label_me_monica_2}
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(plotly)
+
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 2000) %>%
+  select(Entity, Year, Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+mismatches <- setdiff(filtered_data$Entity, world$name)
+
+print("Mismatched country names:")
+print(mismatches)
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
+  labs(title = "Share of population with cancer, 2000") +
+  theme_void() +
+  theme(legend.position = "bottom") 
+
+p <- ggplotly(p, tooltip = "text")
+
+p
 
 ```
 
