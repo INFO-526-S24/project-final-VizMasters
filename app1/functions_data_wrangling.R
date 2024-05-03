@@ -130,24 +130,20 @@ library(readr)
 library(tidyverse)
 
 
-data_1 <- read_csv(here("data/05_share-of-population-with-cancer-crude.csv"))
-
-data_1 <- data_1 |>
-  rename(Deaths_Neoplasms = `Current number of cases of neoplasms per 100 people, in both sexes aged all ages`)
-
-
-world <- ne_countries(scale = "medium", returnclass = "sf")
-
-
-data_1 <- data_1 |>
-  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
-         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
-         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
-
-
-world_data <- merge(world, data_1 , by.x = "name_long", by.y = "Entity")
-world_data <- world_data %>%
-  mutate(country = name_long)
+  data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+  
+  filtered_data <- data |>
+    filter(Year == 2000) |>
+    select(Entity, Year, Deaths_Neoplasms = 'Current number of cases of neoplasms per 100 people, in both sexes aged all ages') %>%
+    mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
+  world <- ne_countries(scale = "medium", returnclass = "sf")
+  
+  filtered_data <- filtered_data %>%
+    mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+           Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+           Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+  
+  world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
 
 
 

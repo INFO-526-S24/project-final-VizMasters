@@ -170,16 +170,19 @@ fun_plot_03_DataFile_03 <- function(objdf,intyear,strcountry)
 
   
   plot_03 <- ggplot() +
-    geom_sf(data = objdf, aes(fill = Deaths_Neoplasms), color = "black", size = 0.5) +
-    scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = "Neoplasm Deaths") +
-    labs(title = "Share of population with cancer") +  
-    theme(legend.position = "bottom") +
-    transition_time(Year) +  
-    ease_aes('linear')+
-    theme_void()
+    geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+    scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
+    labs(title = "Count of cancer cases per 100 people in the population") +
+    theme_void() +
+    theme(
+      legend.position = "bottom",
+      legend.title = element_blank(),
+    )
+  
+  plot_03 <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
   
   
-  
+
   return(plot_03)
   
 }
