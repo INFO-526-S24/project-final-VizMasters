@@ -2,6 +2,7 @@ library(tidyverse)
 library(janitor)
 library(scales)
 library(ggplot2)
+library(plotly)
 # Function : plot_01
 # Plot :  Horizontal bar
 # Data File : 01_Annual_Number_Of_death_by_cause
@@ -24,16 +25,16 @@ fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)
   
   # 
   # Generating the plot 
-  plot_01 <- ggplot(data = df_condition, aes(x = causes_of_death, y = deaths / 1e6)) +
+  plot_01 <- ggplot(data = df_condition, aes(x = causes_of_death, y = deaths)) +
     geom_bar(stat = "identity", fill = "#3365FF", alpha = 0.7,width = 0.9) +  # Add transparency
-    geom_text(
-      aes(label = round(deaths, 1)),  # Round deaths to 1 decimal place
-      position = position_dodge(width = 0.9),
-      hjust = -0.1,
-      size = 4,
-      color = "black"  # Ensure text is visible against dark background
-    ) +
-    scale_y_continuous(labels = label_number(suffix = "M")) +
+    #geom_text(
+      #aes(label = round(deaths, 1)),  # Round deaths to 1 decimal place
+      #position = position_dodge(width = 0.9),
+      #hjust = -0.1,
+      #size = 4,
+      #color = "black"  # Ensure text is visible against dark background
+    #) +
+    scale_y_continuous() +
     coord_flip() +  # Flips x and y axes (optional, adjust as needed)
     theme_minimal() +
     theme(
@@ -48,7 +49,7 @@ fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)
     ) +
     labs(
       title = strtitle,
-      y = "Deaths (Millions)",  # Clarify y-axis label
+      y = "Deaths",  # Clarify y-axis label
       x = "Causes of Death"
     )
   
@@ -91,7 +92,7 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
       hjust = -0.1,
       size = 4
     ) +
-    scale_y_continuous(labels = label_number(suffix = "M")) +
+    scale_y_continuous() +
     coord_flip() +
     theme(
       axis.text.x = element_text(angle = 45, hjust = 1,size =15 ),  # Rotate x-axis labels for readability
@@ -134,7 +135,7 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
   # glimpse(df_condition)
   
   # Generating the plot    
-  plot_02 <-ggplot(data = df_condition, aes(x = cancertype,y = deaths / 1e6 )) +
+  plot_02 <-ggplot(data = df_condition, aes(x = cancertype,y = deaths)) +
     geom_bar(stat = "identity", fill = "blue") +
     geom_text(
       aes(label = deaths),
@@ -142,7 +143,7 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
       hjust = -0.1,
       size = 4
     ) +
-    scale_y_continuous(labels = label_number(suffix = "M")) +
+    scale_y_continuous() +
     coord_flip() +
     theme(
       axis.text.x = element_text(angle = 45, hjust = 1,size =15 ),  # Rotate x-axis labels for readability
