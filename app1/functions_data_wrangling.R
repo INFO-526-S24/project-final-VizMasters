@@ -149,3 +149,19 @@ library(tidyverse)
 
 return(world_data)
 }
+
+fun_DataFile_04 <- function() {
+  data <- read_csv("data/04_cancer-death-rates-by-age.csv") %>%
+    rename(
+      country = Entity,
+      year = Year,
+      `70+ years` = `Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)`,
+      `50-69 years` = `Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)`,
+      `15-49 years` = `Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)`,
+      `5-14 years` = `Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)`,
+      `Under 5 years` = `Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)`  # Adjusted to match the exact column name from your dataset
+    ) %>%
+    select(country, year, `70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`)
+  
+  return(data)
+}

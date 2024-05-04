@@ -187,3 +187,30 @@ fun_plot_03_DataFile_03 <- function(objdf,intyear,strcountry)
   return(plot_03)
   
 }
+
+fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
+  filtered_data <- df %>%
+    filter(country == strcountry, year == as.numeric(intyear)) %>%
+    pivot_longer(
+      cols = c(`70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`),
+      names_to = "age_group",
+      values_to = "rate"
+    )
+  
+  plot_04 <- ggplot(filtered_data, aes(x = age_group, y = rate, fill = age_group)) +
+    geom_bar(stat = "identity") +
+    labs(
+      title = paste("Death Rates from Neoplasms in", strcountry, "in", intyear),
+      x = "Age Group",
+      y = "Death Rate per 100,000 People"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "bottom",
+      legend.title = element_blank(),
+      legend.box = "horizontal"
+    )
+  
+  return(plot_04)
+}

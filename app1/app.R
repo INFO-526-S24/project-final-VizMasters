@@ -24,6 +24,7 @@ source("functions_draw_plots.R")
 df1 <- fun_DataFile_01()
 df2 <- fun_DataFile_02()
 df3 <- fun_DataFile_03()
+df4 <- fun_DataFile_04()
 
 head(df2)
 # Define the UI
@@ -102,7 +103,7 @@ server <- function(input, output) {
   plot_data1 <- reactive({ fun_plot_01_DataFile_01(filter_data(df1),input$country,input$year) })
   plot_data2 <- reactive({ fun_plot_02_DataFile_02(filter_data(df2),input$country,input$year) })
   plot_data3 <- reactive({ fun_plot_03_DataFile_03(filter_data(df3),input$country,input$year) })
-  #plot_data4 <- reactive({ plot_function4(filter_data(df4)) })
+  plot_data4 <- reactive({ fun_plot_04_DataFile_04(filter_data(df4), input$country, input$year) })
   #plot_data5 <- reactive({ plot_function5(filter_data(df5)) })
   #plot_data6 <- reactive({ plot_function6(filter_data(df6)) })
   #plot_data7 <- reactive({ plot_function7(filter_data(df7)) })
@@ -142,6 +143,8 @@ output$plot3 <- renderImage({
   # Return the path to the saved animation file
   list(src = outfile, contentType = 'image/gif')
 }, deleteFile = TRUE)
+
+output$plot4 <- renderPlot({ plot_data4() })
 
   #output$plot3 <- renderPlot({ plot_data3() })
   #output$plot4 <- renderPlot({ plot_data4() })
