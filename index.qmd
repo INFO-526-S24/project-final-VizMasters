@@ -17,9 +17,7 @@ execute:
   echo: false
 ---
 
-## Abstract
-
-In the world of cancer research, there's a lot of information to sift through. Researchers are left to sort through the abundance of new cancer-related data collected daily. However, interpreting all this data to produce actionable insights that improve our understanding of and ability to combat cancer presents a significant challenge. Welcome to "Analyze: Cancers - leading Cause of Death Globally" presented by VizMasters. Join us as we employ visualization techniques to delve into the intricate patterns of cancer-related deaths and their wide-ranging effects on mortality rates across the globe.
+In the world of cancer research, there's a lot of information to sift through. Researchers are left to sort through the abundance of new cancer-related data collected daily. However, interpreting all this data to produce actionable insights that improve our understanding of and ability to combat cancer presents a significant challenge. Welcome to "Cancer" presented by VizMasters. Join us as we employ visualization techniques to delve into the intricate patterns of cancer-related deaths and their wide-ranging effects on mortality rates across the globe.
 
 Cancer continues to be a significant challenge for global health, impacting mortality rates and quality of life across the world. In 2022 alone, an estimated 9.7 million cancer-related deaths occurred, accompanied by 20 million new cases worldwide. Despite remarkable strides in understanding and managing cancer, the relentless rise in global mortality rates persists unabated. Our project endeavors to tap into the extensive datasets available on cancer from <https://ourworldindata.org/cancer>, curated by Max Roser and Hannah Ritchie. By integrating diverse datasets, we seek to unravel the intricate patterns underlying cancer distribution and its multifaceted impacts on diverse populations.
 
@@ -27,4 +25,50 @@ The project draws upon an array of CSV files obtained from the provided source, 
 
 As we explore the data further, we see that each dataset can help us discover new things and hidden patterns. Every bit of information we find brings us closer to understanding cancer better and how it affects people everywhere. Our understanding of the fight against cancer can be further enhanced by carefully examining this data using visual aids.
 
-As we set sail on this journey, our initial destination is the realm of mortality statistics. Here, we dive deep into the data to demonstrate the extent to which cancer affects the number of deaths worldwide. Utilizing an animated barplot, we dynamically illustrate how cancer affects lives across different countries from the years 1990 to 2019, capturing the evolving impact of this disease throughout history. We've visualized the animated barplot using the combination of ggplot2 and plotly.
+As we set sail on this journey, our initial destination is the realm of mortality statistics. Here, we dive deep into the data to demonstrate the extent to which cancer affects the number of deaths worldwide. Utilizing an animated barplot, we dynamically illustrate how cancer affects lives across different countries from the years 1990 to 2019, capturing the evolving impact of this disease throughout history. We've visualized the animated barplot using the combination of ggplot2 and gganimate, to showcase the dynamic impact of cancer on the mortality rate across the world.
+
+\<INSERT CODE FOR PLOT 1\>
+
+\<INSERT RESULTS FOR PLOT 1\>
+
+As we delve deeper into our investigation, we surf through the diverse spectrum of cancer types impacting communities worldwide. Every kind of cancer has a distinct history that is shaped by a multitude of elements such as heredity, lifestyle, and environmental factors. Equipped with extensive data on prevalence rates, our mission is to uncover the intricate details surrounding the most prevalent forms of cancer.
+
+Examining these subtleties in greater detail aims to provide a thorough grasp of how distinct cancer types appear and disperse throughout different regions of the world, thereby supporting larger initiatives to fight this illness worldwide. We consider using a stacked bar plot to improve the visualization of how different types of cancer affect different regions. This kind of plot makes it easier to compare the overall number of cancer deaths across regions as well as display the distribution of cancer types within each region.
+
+\<INSERT CODE FOR PLOT 2\>
+
+\<INSERT RESULTS FOR PLOT 2\>
+
+We move on to the topic of demographics as we investigate further, realizing that age plays a critical role in the conflict against cancer. By carefully analyzing data unique to different age groups, we gain important insights into the societal groups most impacted by cancer-related deaths.
+
+We become more aware of how cancer affects various age groups by carefully and precisely examining the data. The age groups that are most affected by cancer-related mortality can be determined by using this analysis to spot trends and patterns. In the fight against cancer, every age group has a different story to tell, whether it is younger people dealing with a particular type of cancer or older adults facing other obstacles.
+
+By incorporating simple and effective line graphs, we not only highlight the age groups most impacted by cancer but also offer a way to track patterns over a three-decade period in a particular area. These visual aids are effective communicators because they make complex data easier to understand and show changes in the prevalence of cancer over time. We hope to increase awareness, promote action, and ultimately improve outcomes for people affected by cancer across all age groups by concentrating on age demographics.
+
+\< INSERT CODE FOR PLOT 3\>
+
+\<INSERT RESULTS FOR PLOT 3\>
+
+Embarking on a journey to comprehend the global landscape of cancer prevalence, we are driven by the imperative to grasp the nuanced complexities of this pervasive disease. By delving into the incidence of cancer per 100 individuals, we gain insights that transcend mere numbers, offering a deeper understanding of how this disease impacts different populations and regions.
+
+We have successfully illustrated the incidence of each type of cancer in terms of cases per 100 individuals by employing a potent visualization technique: a color-gradient world map. Concerning cancer prevalence, this approach provides a thorough and easily understandable picture across various global regions.
+
+Using this method makes it simple to identify areas where particular cancer types are more common by providing a visual representation of the geographic distribution of cancer prevalence. The visualization is given more depth by the use of a color gradient, whereby lighter shades denote lower rates of prevalence and darker hues indicate higher rates.
+
+We can explore the global cancer landscape on this interactive world map, which offers a dynamic platform for gaining insights into regional variations and disparities in cancer burden.
+
+\<INSERT CODE FOR WORLD MAP\>
+
+\<INSERT RESULTS FROM WORLD MAP\>
+
+In our endeavor to offer a comprehensive platform for exploring cancer prevalence data, we've meticulously crafted a Shiny app that integrates a range of interactive visualizations. This simple-to-use interface provides an entry point to explore the complex aspects of cancer prevalence in various nations, eras, and age classes.
+
+The app's initial plots, which offer insights into trends in cancer prevalence over time and across different regions, are its central component. Users can customize their analysis to focus on particular geographic regions and timeframes of interest by using dropdown menus to select countries and years. This level of customization empowers users to conduct targeted investigations and extract meaningful insights from the data.
+
+Furthermore, the inclusion of an age group dropdown menu enhances the app's analytical capabilities by allowing users to explore how cancer prevalence varies among different age demographics. By selecting specific age groups, users can uncover age-related trends and patterns, gaining deeper insights into the impact of age on cancer prevalence rates.
+
+Towards the end of the app, users encounter the interactive world map visualization, which offers a compelling visual representation of cancer prevalence on a global scale.
+
+\<INSERT THE LINK TO OUR SHINY APP\>
+
+Through the dynamic and user-friendly features of our Shiny app, we aim to democratize access to cancer prevalence data and empower users across diverse domains, including research, healthcare, and policymaking. By providing interactive capabilities such as customizable analyses by country, year, and age group, the app caters to researchers seeking to uncover nuanced trends and patterns in cancer prevalence. Healthcare professionals can utilize the app to inform clinical decision-making and public health interventions by visualizing cancer burden data in an accessible format. Similarly, policymakers can leverage the app to develop evidence-based policies and allocate resources effectively to address the challenges posed by cancer. Overall, our Shiny app serves as a collaborative platform for knowledge sharing and data-driven decision-making, contributing to global efforts to combat cancer and improve outcomes for affected individuals and communities.
