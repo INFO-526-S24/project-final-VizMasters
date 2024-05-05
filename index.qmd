@@ -268,11 +268,14 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(scales)
+library(plotly)
 
 # Load the data
+
 neoplasm_data <- read_csv("data/07_number-of-people-with-cancer-by-age.csv")
 
 # Filtering the data for world and pivoting the data
+
 filtered_data <- neoplasm_data %>%
   filter(Entity == "World") %>%
   select(Year, ends_with("(Number)")) %>%
@@ -283,31 +286,40 @@ filtered_data <- neoplasm_data %>%
     names_pattern = "Prevalence - Neoplasms - Sex: Both - Age: (.*) \\(Number\\)"
   )
 
-# Create the ggplot
-plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group)) +
+# Creating the plot
+
+plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Death Count:", prevalence))) +
   geom_line() +
   geom_point() +
+  scale_colour_viridis_d() +
   scale_x_continuous(breaks = seq(min(filtered_data$Year), max(filtered_data$Year), by = 5)) +
   scale_y_continuous(labels = label_number(suffix = "M")) +
-  labs(title = "Trends in Neoplasm Prevalence by Age Group around the world",
+  labs(title = "Trends in Cancers Prevalence by Age Group around the world",
        x = "Year",
-       y = "Number of People with Neoplasms") +
+       y = "Number of People with Cancers") +
   theme_minimal() +
   theme(plot.background = element_rect(fill = "white", color = NA),
         panel.background = element_rect(fill = "white", color = NA),
-        legend.title = element_blank(),
-        legend.position = "bottom") 
+        legend.title = element_text("Age Group"),
+        legend.position = NULL) 
 
-plot_3
+plotly_plot_3 <- ggplotly(plot_3, tooltip = "text") |>
+  layout(legend = list(orientation = "h", y = -0.3, yanchor = "bottom", x = 0.5, xanchor = "center", title = list(text = " Age Group ", x = 0.5)))
+
+plotly_plot_3
 
 ```
 
-```{r, message=FALSE, echo=FALSE}
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
+
+# Loading Libraries
+
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(readr)
 library(knitr)
+library(gganimate)
 
 # loading the data
 
@@ -315,13 +327,13 @@ neoplasm_data <- read_csv("data/04_cancer-death-rates-by-age.csv") %>%
     rename(
       country = Entity,
       year = Year,
-      `70+ years` = `Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)`,
-      `50-69 years` = `Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)`,
-      `15-49 years` = `Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)`,
-      `5-14 years` = `Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)`,
-      `Under 5 years` = `Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)`  
+      "70+ years" = "Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)",
+      "50-69 years" = "Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)",
+      "15-49 years" = "Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)",
+      "5-14 years" = "Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)",
+      "Under 5 years" = "Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)"  
     ) %>%
-    select(country, year, `70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`)
+    select(country, year, "70+ years", "50-69 years", "15-49 years", "5-14 years", "Under 5 years")
 
 filtered_data <- neoplasm_data %>%
     filter(country == "World") %>%
@@ -330,19 +342,6 @@ filtered_data <- neoplasm_data %>%
       names_to = "Age_Group",
       values_to = "Death_Rate"
     )
-# 
-# # filtered_data <- neoplasm_data %>%
-# #   filter(Entity == "World", Year == 2010) %>%
-# #   select("Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)",
-# #          "Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)",
-# #          "Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)",
-# #          "Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)",
-# #          "Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)") %>%
-#   pivot_longer(
-#     everything(),
-#     names_to = "Age_Group",
-#     values_to = "Death_Rate"
-#   )
 
 # Create the horizontal bar chart
 plot_4 <- ggplot(filtered_data, aes(y = reorder(Age_Group, Death_Rate), x = Death_Rate, fill = Age_Group)) +
@@ -356,7 +355,7 @@ plot_4 <- ggplot(filtered_data, aes(y = reorder(Age_Group, Death_Rate), x = Deat
         legend.position = "bottom",
         legend.title = element_blank(),
         legend.box = "horizontal") +
-transition_time(year)
+        transition_time(year)
 
 # # Animating the plot
 # 
@@ -418,7 +417,7 @@ p <- ggplot() +
   labs(title = "Count of cancer cases per 100 people in the population in 1990") +
   theme_void() +
   theme(
-    legend.position = "bottom",
+    legend.position = NULL,
     legend.title = element_blank(),
   )
 
@@ -480,3 +479,9 @@ Towards the end of the app, users encounter the interactive world map visualizat
 \<INSERT THE LINK TO OUR SHINY APP\>
 
 Through the dynamic and user-friendly features of our Shiny app, we aim to democratize access to cancer prevalence data and empower users across diverse domains, including research, healthcare, and policymaking. By providing interactive capabilities such as customizable analyses by country, year, and age group, the app caters to researchers seeking to uncover nuanced trends and patterns in cancer prevalence. Healthcare professionals can utilize the app to inform clinical decision-making and public health interventions by visualizing cancer burden data in an accessible format. Similarly, policymakers can leverage the app to develop evidence-based policies and allocate resources effectively to address the challenges posed by cancer. Overall, our Shiny app serves as a collaborative platform for knowledge sharing and data-driven decision-making, contributing to global efforts to combat cancer and improve outcomes for affected individuals and communities.
+
+References:
+
+Taken reference for shiny from : <https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/ui-inputs.html>
+
+Taken help of AI for troubleshooting of errors : <https://chatgpt.com/>
