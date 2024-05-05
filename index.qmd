@@ -27,7 +27,112 @@ As we explore the data further, we see that each dataset can help us discover ne
 
 As we set sail on this journey, our initial destination is the realm of mortality statistics. Here, we dive deep into the data to demonstrate the extent to which cancer affects the number of deaths worldwide. Utilizing an animated barplot, we dynamically illustrate how cancer affects lives across different countries from the years 1990 to 2019, capturing the evolving impact of this disease throughout history. We've visualized the animated barplot using the combination of ggplot2 and gganimate, to showcase the dynamic impact of cancer on the mortality rate across the world.
 
-\<INSERT CODE FOR PLOT 1\>
+```{r, echo = FALSE, message = FALSE, fig.width = 16}
+
+# Loading Packages
+
+library(tidyverse) 
+library(janitor)
+library(scales)
+library(gganimate)
+
+# Loading data
+
+data <- read_csv("data/01_annual-number-of-deaths-by-cause.csv")
+
+
+# Data Wrangling
+
+data <- data |> 
+  clean_names() |> 
+  rename( country = entity,
+          Meningitis = deaths_meningitis_sex_both_age_all_ages_number, 
+          Alzheimers =   deaths_alzheimers_disease_and_other_dementias_sex_both_age_all_ages_number,
+          Parkinsons = deaths_parkinsons_disease_sex_both_age_all_ages_number,
+          Nutritional_deficiencies = deaths_nutritional_deficiencies_sex_both_age_all_ages_number, 
+          Malaria = deaths_malaria_sex_both_age_all_ages_number, 
+          Drowning = deaths_drowning_sex_both_age_all_ages_number, 
+          Interpersonal_violence = deaths_interpersonal_violence_sex_both_age_all_ages_number,
+          Maternal_disorders = deaths_maternal_disorders_sex_both_age_all_ages_number, 
+          Hiv_aids =deaths_hiv_aids_sex_both_age_all_ages_number, 
+          Drug_use_disorders = deaths_drug_use_disorders_sex_both_age_all_ages_number, 
+          Tuberculosis = deaths_tuberculosis_sex_both_age_all_ages_number,
+          Cardiovascular_diseases = deaths_cardiovascular_diseases_sex_both_age_all_ages_number,
+          Lower_respiratory_infections = deaths_lower_respiratory_infections_sex_both_age_all_ages_number,
+          Neonatal_disorders = deaths_neonatal_disorders_sex_both_age_all_ages_number,
+          Alcohol_use_disorders = deaths_alcohol_use_disorders_sex_both_age_all_ages_number, Self_harm =
+          deaths_self_harm_sex_both_age_all_ages_number,
+          Exposure_to_forces_of_nature = deaths_exposure_to_forces_of_nature_sex_both_age_all_ages_number,
+          Diarrheal_diseases = deaths_diarrheal_diseases_sex_both_age_all_ages_number,
+          Environmental_heat_and_cold_exposure = deaths_environmental_heat_and_cold_exposure_sex_both_age_all_ages_number,
+          Cancers = deaths_neoplasms_sex_both_age_all_ages_number,
+          Conflict_and_terrorism = deaths_conflict_and_terrorism_sex_both_age_all_ages_number,
+          Diabetes_mellitus = deaths_diabetes_mellitus_sex_both_age_all_ages_number,
+          Kidney_disease = deaths_chronic_kidney_disease_sex_both_age_all_ages_number, 
+          Poisonings =
+          deaths_poisonings_sex_both_age_all_ages_number,
+          Protein_energy_malnutrition = deaths_protein_energy_malnutrition_sex_both_age_all_ages_number,
+          Road_injuries = deaths_road_injuries_sex_both_age_all_ages_number,
+          Respiratory_diseases = deaths_chronic_respiratory_diseases_sex_both_age_all_ages_number,
+          Liver_diseases = deaths_cirrhosis_and_other_chronic_liver_diseases_sex_both_age_all_ages_number,
+          Digestive_diseases = deaths_digestive_diseases_sex_both_age_all_ages_number,
+          Fire_heat_and_hot_substances = deaths_fire_heat_and_hot_substances_sex_both_age_all_ages_number,
+          Acute_hepatitis = deaths_acute_hepatitis_sex_both_age_all_ages_number,
+          Measles = deaths_measles_sex_both_age_all_ages_number 
+          )
+
+# Converting the data to longer format for ploting
+
+cleaned_data <- data |> 
+  select(country, year, Meningitis:last_col())|> 
+  pivot_longer( cols = Meningitis:last_col(), 
+                names_to = "causes_of_death", 
+                values_to = "deaths" )
+
+# Arranging the data
+
+cleaned_data_new <- cleaned_data |>
+  filter(country == "World") |>
+  arrange(year, desc(deaths)) |>
+  mutate(causes_of_death = factor(causes_of_death, 
+                                  levels = rev(unique(causes_of_death))))
+
+# Generating the plot
+
+plot1 <- ggplot(data = cleaned_data_new, aes(y = deaths / 1e6,
+                                             x = causes_of_death,
+                                             fill = if_else(causes_of_death == "Cancers", "Cancers", "Other"))) +
+
+geom_bar(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c("Cancers" = "red", "Other" = "blue")) +
+  scale_y_continuous(labels = label_number(suffix = "M")) +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    title = "Causes of death around the world in the year: {frame_time}",
+    y = "Deaths",
+    x = "Causes of death"
+  ) +
+  transition_time(year)
+
+# Animating the plot
+
+# animated_plot1 <- animate(plot1, duration = 10,
+#                           fps = 3,
+#                           width = 800,
+#                           height = 600,
+#                           renderer = gifski_renderer())
+
+#Render the animation
+# 
+# anim_save("images/animated_plot1.gif", 
+#           animated_plot1, 
+#          width = 800, 
+#          height = 600, 
+#         fps = 3, 
+#         duration = 10)
+knitr::include_graphics("images/animated_plot1.gif")
+```
 
 \<INSERT RESULTS FOR PLOT 1\>
 
@@ -35,7 +140,117 @@ As we delve deeper into our investigation, we surf through the diverse spectrum 
 
 Examining these subtleties in greater detail aims to provide a thorough grasp of how distinct cancer types appear and disperse throughout different regions of the world, thereby supporting larger initiatives to fight this illness worldwide. We consider using a stacked bar plot to improve the visualization of how different types of cancer affect different regions. This kind of plot makes it easier to compare the overall number of cancer deaths across regions as well as display the distribution of cancer types within each region.
 
-\<INSERT CODE FOR PLOT 2\>
+```{r, echo = FALSE}
+
+# Loading Packages
+
+library(tidyverse) 
+library(janitor)
+library(scales)
+library(here)
+
+# Loading the data
+
+  data <- read_csv(here("data/02_total-cancer-deaths-by-type.csv"))
+  
+  # Data Wrangling
+  
+  data <- data |>
+    clean_names() |>
+    rename( country = entity,
+            liver_cancer = deaths_liver_cancer_sex_both_age_all_ages_number,
+            kidney_cancer = deaths_kidney_cancer_sex_both_age_all_ages_number,
+            lip_Oral_Cavity_cancer = deaths_lip_and_oral_cavity_cancer_sex_both_age_all_ages_number,
+            lung_cancer = deaths_tracheal_bronchus_and_lung_cancer_sex_both_age_all_ages_number,	
+            larynx_cancer = deaths_larynx_cancer_sex_both_age_all_ages_number,	
+            billary_tract_cancer = deaths_gallbladder_and_biliary_tract_cancer_sex_both_age_all_ages_number,	
+            skin_cancer = deaths_malignant_skin_melanoma_sex_both_age_all_ages_number,
+            leukemia = deaths_leukemia_sex_both_age_all_ages_number,	
+            hodgkin_lymphoma = deaths_hodgkin_lymphoma_sex_both_age_all_ages_number,	
+            multiple_myeloma = deaths_multiple_myeloma_sex_both_age_all_ages_number,	
+            other_neoplasms = deaths_other_neoplasms_sex_both_age_all_ages_number,	
+            breast_cancer = deaths_breast_cancer_sex_both_age_all_ages_number,	
+            prostate_cancer = deaths_prostate_cancer_sex_both_age_all_ages_number,	
+            thyroid_cancer = deaths_thyroid_cancer_sex_both_age_all_ages_number,	
+            stomach_cancer = deaths_stomach_cancer_sex_both_age_all_ages_number,	
+            bladder_cancer = deaths_bladder_cancer_sex_both_age_all_ages_number,	
+            uterine_cancer = deaths_uterine_cancer_sex_both_age_all_ages_number,	
+            ovarian_cancer = deaths_ovarian_cancer_sex_both_age_all_ages_number,	
+            cervical_cancer = deaths_cervical_cancer_sex_both_age_all_ages_number,
+            brain_cancer = deaths_brain_and_central_nervous_system_cancer_sex_both_age_all_ages_number,	
+            non_hodgkin_lymphoma = deaths_non_hodgkin_lymphoma_sex_both_age_all_ages_number,
+            pancreatic_cancer = deaths_pancreatic_cancer_sex_both_age_all_ages_number,	
+            esophageal_cancer = deaths_esophageal_cancer_sex_both_age_all_ages_number,	
+            testicular_cancer = deaths_testicular_cancer_sex_both_age_all_ages_number,	
+            nasopharynx_cancer = deaths_nasopharynx_cancer_sex_both_age_all_ages_number,	
+            other_pharynx_cancer = deaths_other_pharynx_cancer_sex_both_age_all_ages_number,
+            colon_and_rectum_cancer = deaths_colon_and_rectum_cancer_sex_both_age_all_ages_number,
+            non_melanoma_skin_cancer = deaths_non_melanoma_skin_cancer_sex_both_age_all_ages_number,
+            mesothelioma = deaths_mesothelioma_sex_both_age_all_ages_number
+            )
+  
+  cleaned_data <- data |>
+    select(country, year, liver_cancer:last_col())|>
+    pivot_longer( cols = liver_cancer:last_col(),
+                  names_to = "cancertype",
+                  values_to = "deaths" )
+
+   df_condition <- cleaned_data |>
+    filter(country == "World") |>
+    arrange(desc(deaths)) |>
+    mutate(cancertype = factor(cancertype,
+                                    levels = rev(unique(cancertype))))
+
+  #glimpse(df_condition)
+
+  # Generating the plot
+  # plot_02 <- ggplot(data = df_condition, aes(x = cancertype,y = deaths / 1e6 )) +
+  plot_02 <- ggplot(data = df_condition, aes(x = cancertype, y = deaths / 1e6 )) +
+  geom_bar(stat = "identity", fill = "blue") +
+    # geom_text(
+    #   aes(label = deaths),
+    #   position = position_dodge(width = 0.9),
+    #   hjust = -0.1,
+    #   size = 4
+    # ) +
+    # scale_y_continuous(labels = label_number(suffix = "M")) +
+    coord_flip() +
+    scale_y_continuous(labels = label_number(suffix = "M")) +
+    theme_minimal()+
+    # #theme(
+    #   #plot.background = element_rect(fill = "black"),
+    #   #plot.foreground = element_rect(fill = "white"),
+    #   #panel.grid.major = element_line(color = "black", size = 0.5),
+    #   #panel.grid.minor = element_line(color = "black", size = 0.25),
+    #   text = element_text(color = "white"),                 # Changes color of all text by default
+    #   axis.title = element_text(color = "white"),           # Specifically changes the axis titles
+    #   axis.text = element_text(color = "white"),            # Changes the axis tick text
+    #   plot.title = element_text(color = "white")
+    #   )
+    labs(
+      title = "Deaths by type of Cancers around the world in the year: {frame_time}",
+      y = "Deaths",
+      x = "Type of cancers") +
+      transition_time(year)
+
+# # Animating the plot
+# 
+# animated_plot2 <- animate(plot_02, duration = 10,
+#         fps = 3,
+#         width = 800,
+#         height = 600,
+#         renderer = gifski_renderer()) 
+# 
+# # Rendering the image
+# 
+# anim_save("images/animated_plot2.gif", 
+#           animated_plot2, 
+#          width = 800, 
+#           height = 600, 
+#          fps = 3, 
+#         duration = 10)
+knitr::include_graphics("images/animated_plot2.gif")
+```
 
 \<INSERT RESULTS FOR PLOT 2\>
 
@@ -45,7 +260,122 @@ We become more aware of how cancer affects various age groups by carefully and 
 
 By incorporating simple and effective line graphs, we not only highlight the age groups most impacted by cancer but also offer a way to track patterns over a three-decade period in a particular area. These visual aids are effective communicators because they make complex data easier to understand and show changes in the prevalence of cancer over time. We hope to increase awareness, promote action, and ultimately improve outcomes for people affected by cancer across all age groups by concentrating on age demographics.
 
-\< INSERT CODE FOR PLOT 3\>
+```{r, message=FALSE, echo=FALSE}
+# Loading Libraries
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(scales)
+
+# Load the data
+neoplasm_data <- read_csv("data/07_number-of-people-with-cancer-by-age.csv")
+
+# Filtering the data for world and pivoting the data
+filtered_data <- neoplasm_data %>%
+  filter(Entity == "World") %>%
+  select(Year, ends_with("(Number)")) %>%
+  pivot_longer(
+    cols = -Year,
+    names_to = "age_group",
+    values_to = "prevalence",
+    names_pattern = "Prevalence - Neoplasms - Sex: Both - Age: (.*) \\(Number\\)"
+  )
+
+# Create the ggplot
+plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = seq(min(filtered_data$Year), max(filtered_data$Year), by = 5)) +
+  scale_y_continuous(labels = label_number(suffix = "M")) +
+  labs(title = "Trends in Neoplasm Prevalence by Age Group around the world",
+       x = "Year",
+       y = "Number of People with Neoplasms") +
+  theme_minimal() +
+  theme(plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA),
+        legend.title = element_blank(),
+        legend.position = "bottom") 
+
+plot_3
+
+```
+
+```{r, message=FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(knitr)
+
+# loading the data
+
+neoplasm_data <- read_csv("data/04_cancer-death-rates-by-age.csv") %>%
+    rename(
+      country = Entity,
+      year = Year,
+      `70+ years` = `Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)`,
+      `50-69 years` = `Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)`,
+      `15-49 years` = `Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)`,
+      `5-14 years` = `Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)`,
+      `Under 5 years` = `Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)`  
+    ) %>%
+    select(country, year, `70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`)
+
+filtered_data <- neoplasm_data %>%
+    filter(country == "World") %>%
+    pivot_longer(
+      cols = c(`70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`),
+      names_to = "Age_Group",
+      values_to = "Death_Rate"
+    )
+# 
+# # filtered_data <- neoplasm_data %>%
+# #   filter(Entity == "World", Year == 2010) %>%
+# #   select("Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)",
+# #          "Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)",
+# #          "Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)",
+# #          "Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)",
+# #          "Deaths - Neoplasms - Sex: Both - Age: 70+ years (Rate)") %>%
+#   pivot_longer(
+#     everything(),
+#     names_to = "Age_Group",
+#     values_to = "Death_Rate"
+#   )
+
+# Create the horizontal bar chart
+plot_4 <- ggplot(filtered_data, aes(y = reorder(Age_Group, Death_Rate), x = Death_Rate, fill = Age_Group)) +
+  geom_bar(stat = "identity", position = "dodge", orientation = "y") +
+  scale_fill_viridis_d() +
+  labs(title = "Death Rates from Cancer for the age groups around the world: {frame_time}",
+       y = "Age Group",
+       x = "Death Rate per 100,000 People") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(angle = 0, hjust = 1),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.box = "horizontal") +
+transition_time(year)
+
+# # Animating the plot
+# 
+# animated_plot3 <- animate(plot_4, duration = 10,
+#         fps = 3,
+#         width = 800,
+#         height = 600,
+#         renderer = gifski_renderer())
+# 
+# # Rendering the image
+# 
+# anim_save("images/animated_plot3.gif", 
+#           animated_plot3, 
+#          width = 800, 
+#           height = 600, 
+#          fps = 3, 
+#         duration = 10)
+knitr::include_graphics("images/animated_plot3.gif")
+```
 
 \<INSERT RESULTS FOR PLOT 3\>
 
@@ -57,7 +387,85 @@ Using this method makes it simple to identify areas where particular cancer type
 
 We can explore the global cancer landscape on this interactive world map, which offers a dynamic platform for gaining insights into regional variations and disparities in cancer burden.
 
-\<INSERT CODE FOR WORLD MAP\>
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# Loading libraries
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(plotly)
+
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 1990) %>%
+  select(Entity, Year, Deaths_Neoplasms = "Current number of cases of neoplasms per 100 people, in both sexes aged all ages") %>%
+  mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
+  labs(title = "Count of cancer cases per 100 people in the population in 1990") +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+  )
+
+p <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
+
+p
+```
+
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
+# Loading libraries
+library(rnaturalearthdata)
+library(rnaturalearth)
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(readr)
+library(plotly)
+
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 2019) %>%
+  select(Entity, Year, Deaths_Neoplasms = "Current number of cases of neoplasms per 100 people, in both sexes aged all ages") %>%
+  mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+p1 <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
+  labs(title = "Count of cancer cases per 100 people in the population in 2019") +
+  theme_void() +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(),
+  )
+
+p1 <- ggplotly(p1, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
+
+p1
+```
 
 \<INSERT RESULTS FROM WORLD MAP\>
 
