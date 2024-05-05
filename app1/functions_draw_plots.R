@@ -197,14 +197,16 @@ fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
       values_to = "rate"
     )
   
-  plot_04 <- ggplot(filtered_data, aes(x = age_group, y = rate, fill = age_group)) +
+  plot_04 <- ggplot(filtered_data, aes(x = reorder(age_group, rate), y = rate, fill = age_group)) +
     geom_bar(stat = "identity") +
     labs(
       title = paste("Death Rates from Neoplasms in", strcountry, "in", intyear),
       x = "Age Group",
       y = "Death Rate per 100,000 People"
     ) +
+    scale_fill_viridis_d() +
     theme_minimal() +
+    coord_flip() +
     theme(
       axis.text.x = element_text(angle = 45, hjust = 1),
       legend.position = "bottom",
