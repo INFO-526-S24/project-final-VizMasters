@@ -1,7 +1,7 @@
 ---
 title: "Project title"
 subtitle: "INFO 526 - Fall 2023 - Project Final"
-author: "Author names"
+author: "VizMasters - Monica, Ajay, Miki, SRK, Surya and Rohit"
 title-slide-attributes:
   data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
   data-background-size: stretch
@@ -10,19 +10,30 @@ title-slide-attributes:
 format:
   revealjs:
     theme:  ['data/customtheming.scss']
+    transition: slide
+    background-transition: fade
+    scrollable: true
   
 editor: visual
 execute:
   echo: false
 ---
 
-```{r}
+```{r echo = FALSE}
 #| label: load-packages
 #| include: false
 
 # Load packages here
-pacman::p_load(tidymodels,
-               tidyverse)
+pacman::p_load(tidyverse,
+               janitor,
+               scales,
+               gganimate,
+               here,
+               plotly,
+               knitr,
+               rnaturalearthdata,
+               rnaturalearth,
+               sf)
 
 ```
 
@@ -52,13 +63,177 @@ mtcars$speed <- mtcars$hp / mtcars$wt
 data("penguins")
 ```
 
-# Using Quarto for presentations
+## INTRODUCTION
+::: incremental
+- In the world of cancer research, there's a lot of information to sift through. Researchers are left to sort through the abundance of new cancer-related data collected daily.
 
-## Quarto
+- However, interpreting all this data to produce actionable insights that improve our understanding of and ability to combat cancer presents a significant challenge.
 
--   The presentation is created using the Quarto CLI
+- Join us as we employ visualization techniques to delve into the intricate patterns of cancer-related deaths and their wide-ranging effects on mortality rates across the globe.
+:::
+## Project Approch:
 
--   `##` sets the start of a new slide
+::: incremental
+-   We will use Shiny app , allowing users to get insights and explore the data based on specific criteria (e.g., Country,Year,Causes of death).
+
+-   We used Plotly to create an interactive world map that displays the percentage of the population affected by cancer. 
+
+-   We use Plotly and gganimate to create both static and dynamic visualisations that illustrate the rise in cancer from 1990 to 2019. 
+:::
+
+## Analysis 1
+::: panel-tabset
+#### Plot
+```{r echo = FALSE , fig.show='hold'}
+knitr::include_graphics("images/animated_plot1.gif")
+
+```
+#### Insights
+
+
+
+
+:::
+## Analysis 2
+
+::: panel-tabset
+#### Plot
+```{r echo = FALSE , fig.show='hold'}
+knitr::include_graphics("images/animated_plot2.gif")
+
+```
+#### Insights
+:::
+
+## Analysis 3
+
+::: panel-tabset
+#### Plot
+```{r echo = FALSE , fig.show='hold'}
+neoplasm_data <- read_csv("data/07_number-of-people-with-cancer-by-age.csv")
+
+# Filtering the data for world and pivoting the data
+
+filtered_data <- neoplasm_data %>%
+  filter(Entity == "World") %>%
+  select(Year, ends_with("(Number)")) %>%
+  pivot_longer(
+    cols = -Year,
+    names_to = "age_group",
+    values_to = "prevalence",
+    names_pattern = "Prevalence - Neoplasms - Sex: Both - Age: (.*) \\(Number\\)"
+  )
+
+# Creating the plot
+
+plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Death Count:", prevalence))) +
+  geom_line() +
+  geom_point() +
+  scale_colour_viridis_d() +
+  scale_x_continuous(breaks = seq(min(filtered_data$Year), max(filtered_data$Year), by = 5)) +
+  scale_y_continuous(labels = label_number(suffix = "M")) +
+  labs(title = "Trends in Cancers Prevalence by Age Group around the world",
+       x = "Year",
+       y = "Number of People with Cancers") +
+  theme_minimal() +
+  theme(plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA),
+        legend.title = element_text("Age Group"),
+        legend.position = NULL) 
+
+plotly_plot_3 <- ggplotly(plot_3, tooltip = "text") |>
+  layout(legend = list(orientation = "h",
+  y = -0.3, yanchor = "bottom", x = 0.5,
+  xanchor = "center", title = list(text = " Age Group ", x = 0.5)))
+
+plotly_plot_3
+```
+#### Insights
+
+:::
+
+## Analysis 4
+::: panel-tabset
+#### Plot
+```{r echo = FALSE , fig.show='hold'}
+knitr::include_graphics("images/animated_plot3.gif")
+
+```
+#### Insights
+
+
+:::
+
+## Analysis 5
+::: panel-tabset
+#### Plot-1
+```{r echo = FALSE , fig.show='hold'}
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 1990) %>%
+  select(Entity, Year, Deaths_Neoplasms = "Current number of cases of neoplasms per 100 people, in both sexes aged all ages") %>%
+  mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
+  labs(title = "Count of cancer cases per 100 people in the population in 1990") +
+  theme_void() +
+  theme(
+    legend.position = NULL,
+    legend.title = element_blank(),
+  )
+
+p <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
+
+p
+
+```
+#### Plot-2
+```{r echo = FALSE , fig.show='hold'}
+data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
+
+filtered_data <- data %>%
+  filter(Year == 2019) %>%
+  select(Entity, Year, Deaths_Neoplasms = "Current number of cases of neoplasms per 100 people, in both sexes aged all ages") %>%
+  mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+filtered_data <- filtered_data %>%
+  mutate(Entity = if_else(Entity == "Democratic Republic of Congo", "Democratic Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Congo", "Republic of the Congo", Entity),
+         Entity = if_else(Entity == "Russia", "Russian Federation", Entity))
+
+world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
+
+p <- ggplot() +
+  geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+  scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
+  labs(title = "Count of cancer cases per 100 people in the population in 1990") +
+  theme_void() +
+  theme(
+    legend.position = NULL,
+    legend.title = element_blank(),
+  )
+
+p <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
+
+p
+
+```
+#### Insights
+
+
+:::
 
 ## Layouts
 
