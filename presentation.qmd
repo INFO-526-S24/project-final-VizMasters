@@ -1,9 +1,9 @@
 ---
-title: "Project title"
+title: "Global Trends in Cancer Mortality: A Shiny App Exploration (1990-2019)"
 subtitle: "INFO 526 - Fall 2023 - Project Final"
-author: "VizMasters - Monica, Ajay, Miki, SRK, Surya and Rohit"
+author: "VizMasters - Monica, Ajay, Miki, Kondapaneni Siva Rohit, Surya Vardhan Dama, Rohit Vatsava Kalakala"
 title-slide-attributes:
-  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
+  data-background-image: images/Title_page_02.jpeg
   data-background-size: stretch
   data-background-opacity: "0.7"
   data-slide-number: none
@@ -13,6 +13,7 @@ format:
     transition: slide
     background-transition: fade
     scrollable: true
+    logo: images/Logo.jpeg
   
 editor: visual
 execute:
@@ -37,20 +38,20 @@ pacman::p_load(tidyverse,
 
 ```
 
-```{r}
-#| label: setup
-#| include: false
-
-# Plot theme
-ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
-
-# For better figure resolution
-knitr::opts_chunk$set(
-  fig.retina = 3, 
-  dpi = 300, 
-  fig.width = 6, 
-  fig.asp = 0.618 
-  )
+ ```{r}
+ #| label: setup
+ #| include: false
+# 
+# # Plot theme
+# ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
+# 
+# # For better figure resolution
+# knitr::opts_chunk$set(
+#   fig.retina = 3, 
+#   dpi = 300, 
+#   fig.width = 6, 
+#   fig.asp = 0.618 
+#   )
 ```
 
 ```{r}
@@ -64,44 +65,48 @@ data("penguins")
 ```
 
 ## INTRODUCTION
+
 ::: incremental
-- In the world of cancer research, there's a lot of information to sift through. Researchers are left to sort through the abundance of new cancer-related data collected daily.
+-   In the world of cancer research, there's a lot of information to sift through. Researchers are left to sort through the abundance of new cancer-related data collected daily.
 
-- However, interpreting all this data to produce actionable insights that improve our understanding of and ability to combat cancer presents a significant challenge.
+-   However, interpreting all this data to produce actionable insights that improve our understanding of and ability to combat cancer presents a significant challenge.
 
-- Join us as we employ visualization techniques to delve into the intricate patterns of cancer-related deaths and their wide-ranging effects on mortality rates across the globe.
+-   Join us as we employ visualization techniques to delve into the intricate patterns of cancer-related deaths and their wide-ranging effects on mortality rates across the globe.
 :::
+
 ## Project Approch:
 
 ::: incremental
 -   We will use Shiny app , allowing users to get insights and explore the data based on specific criteria (e.g., Country,Year,Causes of death).
 
--   We used Plotly to create an interactive world map that displays the percentage of the population affected by cancer. 
+-   We used Plotly to create an interactive world map that displays the percentage of the population affected by cancer.
 
--   We use Plotly and gganimate to create both static and dynamic visualisations that illustrate the rise in cancer from 1990 to 2019. 
+-   We use Plotly and gganimate to create both static and dynamic visualisations that illustrate the rise in cancer from 1990 to 2019.
 :::
 
 ## Analysis 1
+
 ::: panel-tabset
 #### Plot
+
 ```{r echo = FALSE , fig.show='hold'}
 knitr::include_graphics("images/animated_plot1.gif")
 
 ```
+
 #### Insights
-
-
-
-
 :::
+
 ## Analysis 2
 
 ::: panel-tabset
 #### Plot
+
 ```{r echo = FALSE , fig.show='hold'}
 knitr::include_graphics("images/animated_plot2.gif")
 
 ```
+
 #### Insights
 :::
 
@@ -109,7 +114,10 @@ knitr::include_graphics("images/animated_plot2.gif")
 
 ::: panel-tabset
 #### Plot
-```{r echo = FALSE , fig.show='hold'}
+
+```{r echo = FALSE}
+# Loading data
+
 neoplasm_data <- read_csv("data/07_number-of-people-with-cancer-by-age.csv")
 
 # Filtering the data for world and pivoting the data
@@ -148,26 +156,29 @@ plotly_plot_3 <- ggplotly(plot_3, tooltip = "text") |>
 
 plotly_plot_3
 ```
-#### Insights
 
+#### Insights
 :::
 
 ## Analysis 4
+
 ::: panel-tabset
 #### Plot
+
 ```{r echo = FALSE , fig.show='hold'}
 knitr::include_graphics("images/animated_plot3.gif")
 
 ```
+
 #### Insights
-
-
 :::
 
 ## Analysis 5
+
 ::: panel-tabset
-#### Plot-1
-```{r echo = FALSE , fig.show='hold'}
+#### 1990
+
+```{r echo = FALSE}
 data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
 
 filtered_data <- data %>%
@@ -198,8 +209,10 @@ p <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_sele
 p
 
 ```
-#### Plot-2
-```{r echo = FALSE , fig.show='hold'}
+
+#### 2019
+
+```{r echo = FALSE}
 data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
 
 filtered_data <- data %>%
@@ -218,7 +231,7 @@ world_data <- merge(world, filtered_data , by.x = "name_long", by.y = "Entity")
 p <- ggplot() +
   geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
   scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
-  labs(title = "Count of cancer cases per 100 people in the population in 1990") +
+  labs(title = "Count of cancer cases per 100 people in the population in 2019") +
   theme_void() +
   theme(
     legend.position = NULL,
@@ -230,111 +243,17 @@ p <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_sele
 p
 
 ```
+
 #### Insights
-
-
 :::
 
-## Layouts
+## Shiny App Link
 
-You can use plain text
+## Conclusion
 
-::: columns
-::: {.column width="40%"}
--   or bullet points[^1]
-:::
 
-::: {.column width="60%"}
-or in two columns
-:::
-:::
+## References
+- Title background image: <https://www.htworld.co.uk/news/research-news/injectible-gel-developed-to-deliver-cancer-drugs-for-solid-tumours/>
 
-[^1]: And add footnotes
+##
 
--   like
-
--   this
-
-## Code
-
-```{r, echo=FALSE}
-# model <- lm(mpg ~ speed, data = mtcars) 
-# 
-# #model |> tidy()
-# 
-# model |> glance()
-
-```
-
-## Plots
-
-```{r}
-# penguins |>
-#   mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
-#   ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-#   geom_point()
-```
-
-## Plot and text
-
-::: columns
-::: {.column width="50%"}
--   Some text
-
--   goes here
-:::
-
-::: {.column width="50%"}
-```{r, warning=FALSE, fig.width=5.5}
-# penguins |>
-#   ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-#   geom_boxplot(linewidth = 0.75,
-#                outlier.size = 2.5) +
-#   theme_minimal(base_size = 15) +
-#   theme(legend.key.size = unit(0.8, "cm"))
-```
-:::
-:::
-
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r}
-# penguins |> 
-#   head() |>
-#   kableExtra::kable() |>
-#   kableExtra::kable_styling()
-```
-
-## Images
-
-![Image credit: Danielle Navarro, Percolate.](images/watercolour_sys02_img34_teacup-ocean.png){fig-align="center" width="500"}
-
-## Math Expressions {.smaller}
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. \$\\alpha+\\beta\$ renders $\alpha + \beta$. You can use the display style with double dollar signs:
-
-```         
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$
-\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i
-$$
-
-Limitations:
-
-1.  The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-2.  There should not be spaces after the opening `$` or before the closing `$`.
-
-# Wrap up
-
-## Feeling adventurous?
-
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
--   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.

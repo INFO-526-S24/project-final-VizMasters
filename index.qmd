@@ -288,7 +288,7 @@ filtered_data <- neoplasm_data %>%
 
 # Creating the plot
 
-plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Death Count:", prevalence))) +
+plot_3 <- ggplot(filtered_data, aes(x = Year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Number Of People:", prevalence))) +
   geom_line() +
   geom_point() +
   scale_colour_viridis_d() +
@@ -484,4 +484,4 @@ References:
 
 Taken reference for shiny from : <https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/ui-inputs.html>
 
-Taken help of AI for troubleshooting of errors : <https://chatgpt.com/>
+Taken help of AI for the troubleshooting of errors : <https://chatgpt.com/>
