@@ -7,12 +7,18 @@ library(plotly)
 # Plot :  Horizontal bar
 # Data File : 01_Annual_Number_Of_death_by_cause
 
-fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)
+fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry ,causeofDeath )#,strCauseOfDeath)
 {
   
   # cat("Year",intyear, "Country",dQuote(strcountry))
   strtitle = cat("Causes of death in ",strcountry," in the year ", intyear )
- 
+  
+ #Filter cause of death 
+  if (causeofDeath != "") {
+    objdf <- objdf %>%
+      filter(causes_of_death %in% causeofDeath)
+  }
+  
   
   df_condition <- objdf |>
     arrange(desc(deaths)) |>
@@ -38,7 +44,7 @@ fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)
     coord_flip() +  # Flips x and y axes (optional, adjust as needed)
     theme_minimal() +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for readability
+      axis.text.x = element_text(),  # Rotate x-axis labels for readability
       plot.background = element_rect(fill = "black"),   # Set black background
       plot.title = element_text(color = "white"),       # Set white title text
       axis.text = element_text(color = "white"),        # Set white text color for labels
@@ -67,50 +73,7 @@ fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)
 fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
 {
   
-  strtitle = cat("Causes of death by cancers in ",strcountry,"in the year ", intyear )
   
-  df_condition <- objdf |>
-    arrange(desc(deaths)) |>
-    mutate(causes_of_death = factor(cancertype,
-                                    levels = rev(unique(cancertype))))
-  
-  
-  df_condition <- objdf |>
-    
-    arrange(desc(deaths)) |>
-    mutate(cancertype = factor(cancertype,
-                               levels = rev(unique(cancertype))))
-  
-  # glimpse(df_condition)
-  
-  # Generating the plot    
-  plot_02 <-ggplot(data = df_condition, aes(x = cancertype,y = deaths / 1e6 )) +
-    geom_bar(stat = "identity", fill = "blue") +
-    geom_text(
-      aes(label = deaths),
-      position = position_dodge(width = 0.5),
-      hjust = -0.1,
-      size = 4
-    ) +
-    scale_y_continuous() +
-    coord_flip() +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1,size =15 ),  # Rotate x-axis labels for readability
-      plot.background = element_rect(fill = "black"),   # Set black background
-      plot.title = element_text(color = "white"),       # Set white title text
-      axis.text = element_text(color = "white"),        # Set white text color for labels
-      axis.title.x = element_text(color = "white"),     # Set white x-axis title
-      axis.title.y = element_text(color = "white"),      # Set white y-axis title
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
-      
-    )      +
-    labs(
-      title = strtitle,
-      y = "Deaths",
-      x = "Causes of death")
-  
-  return(plot_02)
   
 }
 
@@ -120,46 +83,34 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
   
   strtitle = cat("Causes of death by cancers in ",strcountry,"in the year ", intyear )
   
-  df_condition <- objdf |>
-    arrange(desc(deaths)) |>
-    mutate(causes_of_death = factor(cancertype,
-                                    levels = rev(unique(cancertype))))
+  df_condition <- objdf 
+   
   
-  
-  df_condition <- objdf |>
-    
-    arrange(desc(deaths)) |>
-    mutate(cancertype = factor(cancertype,
-                               levels = rev(unique(cancertype))))
-  
-  # glimpse(df_condition)
-  
-  # Generating the plot    
-  plot_02 <-ggplot(data = df_condition, aes(x = cancertype,y = deaths)) +
-    geom_bar(stat = "identity", fill = "blue") +
+  plot_02 <- ggplot(data = df_condition, aes(x = reorder(cancertype, deaths), y = deaths)) +
+    geom_bar(stat = "identity", fill = "#3365FF", alpha = 0.7,width = 0.9) +
     geom_text(
       aes(label = deaths),
-      position = position_dodge(width = 0.5),
+      position = position_dodge(width = 0.9),
       hjust = -0.1,
       size = 4
     ) +
-    scale_y_continuous() +
     coord_flip() +
+    theme_minimal()+
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1,size =15 ),  # Rotate x-axis labels for readability
-      plot.background = element_rect(fill = "black"),   # Set black background
-      plot.title = element_text(color = "white"),       # Set white title text
-      axis.text = element_text(color = "white"),        # Set white text color for labels
-      axis.title.x = element_text(color = "white"),     # Set white x-axis title
-      axis.title.y = element_text(color = "white"),      # Set white y-axis title
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
-      
-    )      +
+      plot.background = element_rect(fill = "black"),
+      panel.grid.major = element_line(color = "black", size = 0.5),
+      panel.grid.minor = element_line(color = "black", size = 0.25),
+      text = element_text(color = "white"),                 # Changes color of all text by default
+      axis.title = element_text(color = "white"),           # Specifically changes the axis titles
+      axis.text = element_text(color = "white"),            # Changes the axis tick text
+      plot.title = element_text(color = "white")
+    ) +
     labs(
       title = strtitle,
       y = "Deaths",
-      x = "Causes of death")
+      x = "Type of cancers"
+    )
+  
   
   return(plot_02)
   
@@ -215,4 +166,30 @@ fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
     )
   
   return(plot_04)
+}
+
+fun_plot_05_DataFile_05 <- function(df, strcountry, intyear) {
+  
+  df<- na.omit(df)
+  plot_5 <- ggplot(df, aes(x = year, y = values_to / 1e6, color = age_group, group = age_group, text= paste("Year:", year, "<br>Number Of People:", values_to))) +
+    geom_line() +
+    geom_point() +
+    scale_colour_viridis_d() +
+    scale_x_continuous(breaks = seq(min(df$year), max(df$year), by = 5)) +
+    scale_y_continuous(labels = label_number(suffix = "M")) +
+    labs(title = "Trends in Cancers Prevalence by Age Group around the world",
+         x = "Year",
+         y = "Number of People with Cancers") +
+    theme_minimal() +
+    theme(plot.background = element_rect(fill = "white", color = NA),
+          panel.background = element_rect(fill = "white", color = NA),
+          legend.title = element_text("Age Group"),
+          legend.position = NULL) 
+  
+  
+  
+  return(plot_5)
+  
+  
+  
 }

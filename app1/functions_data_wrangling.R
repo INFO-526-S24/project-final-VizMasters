@@ -1,11 +1,16 @@
 library(tidyverse) 
 library(janitor)
 library(scales)
+library(dplyr)
 
 ## Functions - Data Wrangling
 
-
-
+to_camel_case <- function(text) {
+  # Replace all underscores with blanks
+  text <- gsub("_", " ", text)
+  # Convert to camel case
+  gsub("\\b(\\w)", "\\U\\1", text, perl = TRUE)
+}
 
 fun_DataFile_01 <-function()
 {
@@ -62,9 +67,11 @@ fun_DataFile_01 <-function()
                   names_to = "causes_of_death",
                   values_to = "deaths" )
   
-  # missing_count <- sum(is.na(cleaned_data))
-  # missing_count
   
+ 
+  
+  cleaned_data <- cleaned_data %>%
+    mutate(causes_of_death = to_camel_case(str_replace(causes_of_death, "_", " ")))
   
   # cleaned_data_new <- cleaned_data |>
   # filter(year == 2019 & country == "World") |>
@@ -93,27 +100,45 @@ fun_DataFile_02 <-function()
     clean_names() |>
     rename( country = entity,
             liver_cancer = deaths_liver_cancer_sex_both_age_all_ages_number,
-            kidney_cancer = deaths_kidney_cancer_sex_both_age_all_ages_number
+            kidney_cancer = deaths_kidney_cancer_sex_both_age_all_ages_number,
+            lip_Oral_Cavity_cancer = deaths_lip_and_oral_cavity_cancer_sex_both_age_all_ages_number,
+            lung_cancer = deaths_tracheal_bronchus_and_lung_cancer_sex_both_age_all_ages_number,	
+            larynx_cancer = deaths_larynx_cancer_sex_both_age_all_ages_number,	
+            billary_tract_cancer = deaths_gallbladder_and_biliary_tract_cancer_sex_both_age_all_ages_number,	
+            skin_cancer = deaths_malignant_skin_melanoma_sex_both_age_all_ages_number,
+            leukemia = deaths_leukemia_sex_both_age_all_ages_number,	
+            hodgkin_lymphoma = deaths_hodgkin_lymphoma_sex_both_age_all_ages_number,	
+            multiple_myeloma = deaths_multiple_myeloma_sex_both_age_all_ages_number,	
+            other_neoplasms = deaths_other_neoplasms_sex_both_age_all_ages_number,	
+            breast_cancer = deaths_breast_cancer_sex_both_age_all_ages_number,	
+            prostate_cancer = deaths_prostate_cancer_sex_both_age_all_ages_number,	
+            thyroid_cancer = deaths_thyroid_cancer_sex_both_age_all_ages_number,	
+            stomach_cancer = deaths_stomach_cancer_sex_both_age_all_ages_number,	
+            bladder_cancer = deaths_bladder_cancer_sex_both_age_all_ages_number,	
+            uterine_cancer = deaths_uterine_cancer_sex_both_age_all_ages_number,	
+            ovarian_cancer = deaths_ovarian_cancer_sex_both_age_all_ages_number,	
+            cervical_cancer = deaths_cervical_cancer_sex_both_age_all_ages_number,
+            brain_cancer = deaths_brain_and_central_nervous_system_cancer_sex_both_age_all_ages_number,	
+            non_hodgkin_lymphoma = deaths_non_hodgkin_lymphoma_sex_both_age_all_ages_number,
+            pancreatic_cancer = deaths_pancreatic_cancer_sex_both_age_all_ages_number,	
+            esophageal_cancer = deaths_esophageal_cancer_sex_both_age_all_ages_number,	
+            testicular_cancer = deaths_testicular_cancer_sex_both_age_all_ages_number,	
+            nasopharynx_cancer = deaths_nasopharynx_cancer_sex_both_age_all_ages_number,	
+            other_pharynx_cancer = deaths_other_pharynx_cancer_sex_both_age_all_ages_number,
+            colon_and_rectum_cancer = deaths_colon_and_rectum_cancer_sex_both_age_all_ages_number,
+            non_melanoma_skin_cancer = deaths_non_melanoma_skin_cancer_sex_both_age_all_ages_number,
+            mesothelioma = deaths_mesothelioma_sex_both_age_all_ages_number
     )
-  
-  # glimpse(data)
   
   cleaned_data <- data |>
     select(country, year, liver_cancer:last_col())|>
     pivot_longer( cols = liver_cancer:last_col(),
                   names_to = "cancertype",
                   values_to = "deaths" )
+  cleaned_data <- cleaned_data %>%
+    mutate(cancertype = to_camel_case(str_replace(cancertype, "_", " ")))
   
-  cleaned_data <- cleaned_data %>%
-    mutate(cancertype = str_replace(cancertype, "_sex_both_age_all_ages_number", ""))
-  cleaned_data <- cleaned_data %>%
-    mutate(cancertype = str_replace(cancertype, "deaths_", ""))
-  cleaned_data <- cleaned_data %>%
-    mutate(cancertype = str_replace(cancertype, "_", " "))
-  cleaned_data <- cleaned_data %>%
-    mutate(cancertype = str_to_title(cancertype))
-  
-  return(cleaned_data)  
+  return(cleaned_data)
 }
 
 
@@ -164,4 +189,36 @@ fun_DataFile_04 <- function() {
     select(country, year, `70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`)
   
   return(data)
+}
+
+
+fun_DataFile_05 <- function()
+{
+  
+  # Load the data
+  
+  neoplasm_data <- read_csv("data/07_number-of-people-with-cancer-by-age.csv")
+  
+  # Filtering the data for world and pivoting the data
+  
+  filtered_data <- neoplasm_data %>%
+    # filter(Entity == "World") %>%
+    select(Entity, Year, ends_with("(Number)")) %>%
+    pivot_longer(
+      cols = -c(Entity, Year),  # Include the Entity column
+      names_to = "age_group",
+      values_to = "prevalence",
+      names_pattern = "Prevalence - Neoplasms - Sex: Both - Age: (.*) \\(Number\\)"
+    )
+  
+  filtered_data <- filtered_data |>
+    mutate(country = Entity,
+           year = Year
+    )  
+  
+  
+  
+  return(neoplasm_data)
+  
+  
 }
