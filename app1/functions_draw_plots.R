@@ -168,14 +168,17 @@ fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
   return(plot_04)
 }
 
-fun_plot_05_DataFile_05 <- function(df, strcountry, intyear) {
+fun_plot_05_DataFile_05 <- function(df) {
   
-  df<- na.omit(df)
-  plot_5 <- ggplot(df, aes(x = year, y = values_to / 1e6, color = age_group, group = age_group, text= paste("Year:", year, "<br>Number Of People:", values_to))) +
+
+  
+  # Optionally, you can also convert values_to to numeric to ensure it only contains finite numbers
+  
+  plot_5 <-ggplot(df, aes(x = year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Number Of People:", prevalence))) +
     geom_line() +
     geom_point() +
     scale_colour_viridis_d() +
-    scale_x_continuous(breaks = seq(min(df$year), max(df$year), by = 5)) +
+    scale_x_continuous(breaks = seq(min(df$Year), max(df$Year), by = 5)) +
     scale_y_continuous(labels = label_number(suffix = "M")) +
     labs(title = "Trends in Cancers Prevalence by Age Group around the world",
          x = "Year",
@@ -184,7 +187,7 @@ fun_plot_05_DataFile_05 <- function(df, strcountry, intyear) {
     theme(plot.background = element_rect(fill = "white", color = NA),
           panel.background = element_rect(fill = "white", color = NA),
           legend.title = element_text("Age Group"),
-          legend.position = NULL) 
+          legend.position = NULL)
   
   
   

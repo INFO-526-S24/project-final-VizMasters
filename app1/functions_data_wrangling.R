@@ -203,22 +203,21 @@ fun_DataFile_05 <- function()
   
   filtered_data <- neoplasm_data %>%
     # filter(Entity == "World") %>%
-    select(Entity, Year, ends_with("(Number)")) %>%
+    select(Year, ends_with("(Number)")) %>%
     pivot_longer(
-      cols = -c(Entity, Year),  # Include the Entity column
+      cols = -c( Year),  # Include the Entity column
       names_to = "age_group",
       values_to = "prevalence",
       names_pattern = "Prevalence - Neoplasms - Sex: Both - Age: (.*) \\(Number\\)"
     )
   
   filtered_data <- filtered_data |>
-    mutate(country = Entity,
+    mutate(
            year = Year
     )  
   
-  
-  
-  return(neoplasm_data)
+
+  return(filtered_data)
   
   
 }

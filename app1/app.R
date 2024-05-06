@@ -28,6 +28,7 @@ df3 <- fun_DataFile_03()
 df4 <- fun_DataFile_04()
 df5 <- fun_DataFile_05()
 
+
 head(df2)
 # Define the UI
 ui <- fluidPage(theme = shinytheme("cyborg"),
@@ -107,17 +108,18 @@ server <- function(input, output) {
       df %>%
         filter(country %in% input$country, year %in% input$year)
     } else {
-      df %>%
-        filter(Entity %in% input$country)
+      
+      return(df )
     }
   }
   
+
   # Plot functions
   plot_data1 <- reactive({ fun_plot_01_DataFile_01(filter_data(df1),input$country,input$year, input$causes_of_death) })
   plot_data2 <- reactive({ fun_plot_02_DataFile_02(filter_data(df2),input$country,input$year) })
   plot_data3 <- reactive({ fun_plot_03_DataFile_03(filter_data(df3),input$country,input$year) })
   plot_data4 <- reactive({ fun_plot_04_DataFile_04(filter_data(df4), input$country, input$year) })
-  plot_data5 <- reactive({ fun_plot_05_DataFile_05(filter_data(df5), input$country, input$year) })
+  plot_data5 <- reactive({ fun_plot_05_DataFile_05(filter_data(df5)) })
   
   # Render plots
   output$plot1 <- renderPlot({
@@ -145,13 +147,11 @@ server <- function(input, output) {
   output$plot4 <- renderPlot({ plot_data4() })
   
   
-  output$plot5 <- renderPlotly({
+  output$plot5 <- renderPlot({
     plot_data <- plot_data5()
     options(repr.plot.width = 8, repr.plot.height = 6)
-    #plot_data +
-      ggplotly(plot_data, tooltip = "text") |>
-      layout(legend = list(orientation = "h", y = -0.3, yanchor = "bottom", x = 0.5, xanchor = "center", title = list(text = " Age Group ", x = 0.5)))
-    
+    plot_data +
+      ggtitle("Trends in Cancers Prevalence by Age Group around the world")
   })
   
   
