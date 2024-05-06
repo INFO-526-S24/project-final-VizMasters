@@ -38,7 +38,7 @@ pacman::p_load(tidyverse,
 
 ```
 
- ```{r}
+```{r}
  #| label: setup
  #| include: false
 # 
