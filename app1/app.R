@@ -67,13 +67,15 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
         ")
         )
       ),
-      selectInput("country", "Select Country", unique(c(df1$country, df2$country,df3$country)),
-                  selected = NULL,
-                  multiple = FALSE,
-                  selectize = TRUE,
-                  size = NULL
-                  ),
-      selectInput("year", "Select Year", unique(c(df1$year, df2$year, df3$Year)),
+      
+      div(id = "selectInputs",  # Wrap selectInput elements in a div with an id
+          selectInput("country", "Select Country", unique(c(df1$country, df2$country, df3$country)),
+                      selected = "World",  # Set "World" as the default selected option
+                      multiple = FALSE,
+                      selectize = TRUE,
+                      size = NULL
+          ),
+      selectInput("year", "Select Year", unique(c(df1$year, df2$year)),
                   selected = NULL,
                   multiple = FALSE,
                   selectize = TRUE,
@@ -81,7 +83,7 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
       #uiOutput("causes_of_death_ui")
       uiOutput("age_group_ui")
       
-      
+      )
       
     ),
     mainPanel(
@@ -89,9 +91,9 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
         id = "mainTabset",
         tabPanel("Causes of death", plotOutput("plot1")),
         tabPanel("Death by cancer", plotOutput("plot2")),
-        tabPanel("Count of cancer cases per 100 people in the population", plotOutput("plot3")),
+        tabPanel("Cancer count/100 people", plotOutput("plot3")),
         tabPanel("Death rate by Age group", plotOutput("plot4")),
-        tabPanel("Population of Cancer by Age group", plotOutput("plot5"))
+        tabPanel("Cancer by Age group", plotOutput("plot5"))
         # tabPanel("Plot 6", plotOutput("plot6")),
         # tabPanel("Plot 7", plotOutput("plot7")),
         # tabPanel("Plot 8", plotOutput("plot8"))
@@ -102,7 +104,31 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
 
 
   
-server <- function(input, output) {
+server <- function(input, output,session) {
+  
+  
+  observe({
+    #if (input$mainTabset == "Death rate by Age group") {
+    #  shinyjs::hide("selectInputs")  # Hide selectInput elements when Tab "Death rate by Age group" is selected
+    #} else 
+    
+    if (input$mainTabset == "Cancer count/100 people") 
+      
+      {
+        updateSelectInput(session, "country", selected = "World")
+      }
+    
+      
+    if (input$mainTabset == "Cancer by Age group") 
+          {
+      
+                shinyjs::hide("selectInputs")  # Hide selectInput elements when Tab "Cancer by Age group" is selected
+          }
+    else
+          {
+            shinyjs::show("selectInputs")  # Show selectInput elements for other tabs
+          }
+  })
  
   # Function to filter data
   filter_data <- function(df) {
@@ -121,9 +147,11 @@ server <- function(input, output) {
     } 
   # Function to filter data
   filter_data5 <- function(df) {
+    selected_columns <- input$age_group_ui  # Assuming 'age_group_ui' is the ID of your checkboxGroupInput
     df %>%
-      select(all_of(input$ageGroupInput))
-  } 
+      select(all_of(selected_columns))
+  }
+  
   
 
   # Plot functions
@@ -131,7 +159,7 @@ server <- function(input, output) {
   plot_data2 <- reactive({ fun_plot_02_DataFile_02(filter_data(df2),input$country,input$year) })
   plot_data3 <- reactive({ fun_plot_03_DataFile_03(filter_data3(df3),input$country,input$year) })
   plot_data4 <- reactive({ fun_plot_04_DataFile_04(filter_data(df4), input$country, input$year) })
-  plot_data5 <- reactive({ fun_plot_05_DataFile_05(filter_data5(df5)) })
+  plot_data5 <- reactive({ fun_plot_05_DataFile_05(df5) })
   
   # Render plots
   output$plot1 <- renderPlot({
@@ -152,7 +180,7 @@ server <- function(input, output) {
     plot_data <- plot_data3()
     options(repr.plot.width = 8, repr.plot.height = 6)
     plot_data +
-      ggtitle(paste("Causes of death by cancers in", " for the year", input$year))
+      ggtitle(paste(" Causes of death by cancers", " for the year", input$year))
   })
   
   output$plot4 <- renderPlot({ plot_data4() })

@@ -40,7 +40,9 @@ fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)#,strCauseOfDeath)
       #size = 4,
       #color = "black"  # Ensure text is visible against dark background
     #) +
-    scale_y_continuous() +
+    #scale_y_continuous() +
+    scale_y_continuous(labels = label_number(big.mark = ","))+
+    
     coord_flip() +  # Flips x and y axes (optional, adjust as needed)
     theme_minimal() +
     theme(
@@ -95,6 +97,7 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
       size = 4
     ) +
     coord_flip() +
+    scale_y_continuous(labels = label_number(big.mark = ","))+
     theme_minimal()+
     theme(
       plot.background = element_rect(fill = "black"),
@@ -125,8 +128,18 @@ fun_plot_03_DataFile_03 <- function(objdf,intyear,strcountry)
     labs(title = "Count of cancer cases per 100 people in the population") +
     theme_void() +
     theme(
+      plot.background = element_rect(fill = "black"),
+      plot.title = element_text(color = "white"),
+      axis.text = element_text(color = "black"),        # Set white text color for labels
+      axis.title.x = element_text(color = "white"),     # Set white x-axis title
+      axis.title.y = element_text(color = "white"),  
       legend.position = "bottom",
       legend.title = element_blank(),
+      legend.text = element_text(color = "white")
+      
+      
+          
+      
     )
   
   #plot_03 <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
@@ -149,7 +162,7 @@ fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
   plot_04 <- ggplot(filtered_data, aes(x = reorder(age_group, rate), y = rate, fill = age_group)) +
     geom_bar(stat = "identity") +
     labs(
-      title = paste("Death Rates from Neoplasms in", strcountry, "in", intyear),
+      title = paste("Death Rates from Neoplasms in ",strcountry,  " for ", intyear),
       x = "Age Group",
       y = "Death Rate per 100,000 People"
     ) +
@@ -157,9 +170,18 @@ fun_plot_04_DataFile_04 <- function(df, strcountry, intyear) {
     theme_minimal() +
     coord_flip() +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),
+      
+      plot.background = element_rect(fill = "black"),
+      plot.title = element_text(color = "white"),
+      axis.text = element_text(color = "white"),        # Set white text color for labels
+      axis.title.x = element_text(color = "white"),     # Set white x-axis title
+      axis.title.y = element_text(color = "white"),
+      panel.grid.major = element_line(color = "black", size = 0.5),
+      panel.grid.minor = element_line(color = "black", size = 0.25),
+      #axis.text.x = element_text(angle = 45, hjust = 1),
       legend.position = "bottom",
       legend.title = element_blank(),
+      legend.text = element_text(color = "white"),
       legend.box = "horizontal"
     )
   
@@ -173,8 +195,8 @@ fun_plot_05_DataFile_05 <- function(df) {
   # Optionally, you can also convert values_to to numeric to ensure it only contains finite numbers
   
   plot_5 <-ggplot(df, aes(x = year, y = prevalence / 1e6, color = age_group, group = age_group, text= paste("Year:", Year, "<br>Number Of People:", prevalence))) +
-    geom_line() +
-    geom_point() +
+    geom_line(size=1.5) +
+    geom_point(size=2.5) +
     scale_colour_viridis_d() +
     scale_x_continuous(breaks = seq(min(df$Year), max(df$Year), by = 5)) +
     scale_y_continuous(labels = label_number(suffix = "M")) +
@@ -182,9 +204,16 @@ fun_plot_05_DataFile_05 <- function(df) {
          x = "Year",
          y = "Number of People with Cancers") +
     theme_minimal() +
-    theme(plot.background = element_rect(fill = "white", color = NA),
-          panel.background = element_rect(fill = "white", color = NA),
+    theme(plot.background = element_rect(fill = "black"),
+          plot.title = element_text(color = "white"),
+          axis.text = element_text(color = "white"),        # Set white text color for labels
+          axis.title.x = element_text(color = "white"),     # Set white x-axis title
+          axis.title.y = element_text(color = "white"),
+          panel.grid.major = element_line(color = "white", size = 0.25),
+          panel.grid.minor = element_line(color = "black", size = 0.25),
           legend.title = element_text("Age Group"),
+          
+          legend.text = element_text(color = "white"),
           legend.position = NULL)
   
   
