@@ -1,5 +1,5 @@
 ---
-title: "Proposal title"
+title: "Global Trends in Cancer Mortality: A Shiny App Exploration (1990-2019)"
 subtitle: "Proposal"
 author: 
   - name: "VizMasters - Siva Rohit, Rohit Vatsava, Surya Vardhan, Monica Kommareddy, Miki, Ajay"

@@ -1,5 +1,5 @@
 ---
-title: "Cancer"
+title: "Global Trends in Cancer Mortality: A Shiny App Exploration (1990-2019)"
 subtitle: "INFO 526 - Project Final"
 author: 
   - name: "VizMasters - Monica, Ajay, Miki, SRK, Surya and Rohit"
@@ -134,7 +134,11 @@ geom_bar(stat = "identity", show.legend = FALSE) +
 knitr::include_graphics("images/animated_plot1.gif")
 ```
 
-\<INSERT RESULTS FOR PLOT 1\>
+### Analysis
+
+-   The plot shows us various causes of death around the world from the year 1990 to the year 2019. Cardiovascular illness continues to be primary cause of death during the time period. It is closely followed by death by cancers.
+
+-   Certain viral diseases, like lower respiratory infections, are on the rise again. This suggests a changing pattern that could be influenced by aging populations and climate change. The data might show improvements in immunization rates and healthcare accessibility that have led to benefits in some areas.
 
 As we delve deeper into our investigation, we surf through the diverse spectrum of cancer types impacting communities worldwide. Every kind of cancer has a distinct history that is shaped by a multitude of elements such as heredity, lifestyle, and environmental factors. Equipped with extensive data on prevalence rates, our mission is to uncover the intricate details surrounding the most prevalent forms of cancer.
 
@@ -252,7 +256,13 @@ library(here)
 knitr::include_graphics("images/animated_plot2.gif")
 ```
 
-\<INSERT RESULTS FOR PLOT 2\>
+### Analysis
+
+-   The plot showcases deaths by different types of cancers around the world over the time period 1990-2019. Lung cancer consistently dominates as the leading cause of cancer deaths globally, indicating a persistent and significant public health challenge over the entire period from 1990 to 2019.
+
+-   Liver cancer exhibits an initial increase in mortality rates until the late 1990s, followed by a noticeable decline in the early 2000s, suggesting potential success in interventions or treatments targeting this specific cancer type.
+
+-   Mortality rates due to stomach cancer remain relatively constant throughout the observed period, contrasting with the overall increasing trend seen in other cancer types, emphasizing the need for targeted research and interventions to address this specific cancer's impact.
 
 We move on to the topic of demographics as we investigate further, realizing that age plays a critical role in the conflict against cancer. By carefully analyzing data unique to different age groups, we gain important insights into the societal groups most impacted by cancer-related deaths.
 
@@ -376,7 +386,17 @@ plot_4 <- ggplot(filtered_data, aes(y = reorder(Age_Group, Death_Rate), x = Deat
 knitr::include_graphics("images/animated_plot3.gif")
 ```
 
-\<INSERT RESULTS FOR PLOT 3\>
+### Analysis
+
+-   A notable inflection point is observed after the 2000s, particularly evident in the age group of 50-69 years, indicating a significant acceleration in mortality rates during this period.
+
+-   Mortality rates in both the under 5 and 5-14 age groups show striking similarity, suggesting comparable vulnerability to cancer-related causes within these younger age brackets.
+
+-   While both the 15-49 and 70+ age groups exhibit a consistent upward trend in mortality rates, they converge around 2010. However, following this convergence, the 70+ age group experiences a rapid increase, surpassing the 15-49 age group, highlighting the disproportionate burden of cancer-related mortality among older populations.
+
+-   Over the period spanning from 1990 to 2019, the 70+ age group emerges as the demographic with the highest contribution to cancer-related mortality, surpassing all other age groups.
+
+-   Notably, beginning from the early 2000s, both the 50-69 and 70+ age groups exhibit a discernible decline in mortality rates, signaling a positive shift in the trend of cancer-related deaths within these older age groups.
 
 Embarking on a journey to comprehend the global landscape of cancer prevalence, we are driven by the imperative to grasp the nuanced complexities of this pervasive disease. By delving into the incidence of cancer per 100 individuals, we gain insights that transcend mere numbers, offering a deeper understanding of how this disease impacts different populations and regions.
 
@@ -466,7 +486,27 @@ p1 <- ggplotly(p1, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_se
 p1
 ```
 
-\<INSERT RESULTS FROM WORLD MAP\>
+### Analysis
+
+-   Over the observed period, the death rate due to cancer has climbed from 20 deaths per 100 individuals to 25 deaths per 100 individuals globally.
+
+-   Notably, countries such as Canada and America have witnessed a significant surge in their death rates, nearly doubling compared to the initial figures, thereby reaching approximately 40 deaths per 100 individuals.
+
+-   Conversely, India has experienced a much milder increase in death rates, with figures remaining relatively low, around 5 deaths per 100 individuals, indicating a notable disparity compared to Western countries.
+
+Romania exhibits a consistent death rate, hovering around 17 deaths per 100 individuals throughout the observed period, suggesting a stable trend amidst fluctuating global patterns.
+
+### Conclusion
+
+-   **Leading Causes and Interventions:** Lung cancer remains the primary cause of death globally, while declines in liver cancer mortality post-2000s suggest intervention successes. Stable mortality rates due to stomach cancer call for targeted research and interventions.
+
+-   **Global Increase in Cancer Mortality:** Overall, there's been a worrying rise in cancer-related deaths worldwide, with rates climbing from 20 to 25 deaths per 100 individuals.
+
+-   **Regional Disparities:** Canada and America have seen a significant surge in death rates, reaching nearly 40 deaths per 100 individuals, contrasting with India's lower rate of around 5 deaths per 100 individuals.
+
+-   **Age Group Dynamics:** The 70+ age group is most vulnerable, but positive shifts in mortality rates among older age cohorts suggest progress in prevention and treatment.
+
+-   **Inflection Points:** Since the 2000s, notable variations in mortality rates suggest significant changes in disease dynamics, highlighting the importance of advancing treatment procedures and research in the medical field.
 
 In our endeavor to offer a comprehensive platform for exploring cancer prevalence data, we've meticulously crafted a Shiny app that integrates a range of interactive visualizations. This simple-to-use interface provides an entry point to explore the complex aspects of cancer prevalence in various nations, eras, and age classes.
 
@@ -476,7 +516,7 @@ Furthermore, the inclusion of an age group dropdown menu enhances the app's anal
 
 Towards the end of the app, users encounter the interactive world map visualization, which offers a compelling visual representation of cancer prevalence on a global scale.
 
-\<INSERT THE LINK TO OUR SHINY APP\>
+<https://ajaykumarapp1.shinyapps.io/VizMasters/>
 
 Through the dynamic and user-friendly features of our Shiny app, we aim to democratize access to cancer prevalence data and empower users across diverse domains, including research, healthcare, and policymaking. By providing interactive capabilities such as customizable analyses by country, year, and age group, the app caters to researchers seeking to uncover nuanced trends and patterns in cancer prevalence. Healthcare professionals can utilize the app to inform clinical decision-making and public health interventions by visualizing cancer burden data in an accessible format. Similarly, policymakers can leverage the app to develop evidence-based policies and allocate resources effectively to address the challenges posed by cancer. Overall, our Shiny app serves as a collaborative platform for knowledge sharing and data-driven decision-making, contributing to global efforts to combat cancer and improve outcomes for affected individuals and communities.
 
@@ -484,4 +524,4 @@ References:
 
 Taken reference for shiny from : <https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/ui-inputs.html>
 
-Taken help of AI for the troubleshooting of errors : <https://chatgpt.com/>
+Datasets taken from: <https://ourworldindata.org/cancer>
