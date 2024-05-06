@@ -7,17 +7,17 @@ library(plotly)
 # Plot :  Horizontal bar
 # Data File : 01_Annual_Number_Of_death_by_cause
 
-fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry ,causeofDeath )#,strCauseOfDeath)
+fun_plot_01_DataFile_01 <- function(objdf,intyear,strcountry)#,strCauseOfDeath)
 {
   
   # cat("Year",intyear, "Country",dQuote(strcountry))
   strtitle = cat("Causes of death in ",strcountry," in the year ", intyear )
-  
- #Filter cause of death 
-  if (causeofDeath != "") {
-    objdf <- objdf %>%
-      filter(causes_of_death %in% causeofDeath)
-  }
+ #  
+ # #Filter cause of death 
+ #  if (causeofDeath != "") {
+ #    objdf <- objdf %>%
+ #      filter(causes_of_death %in% causeofDeath)
+ #  }
   
   
   df_condition <- objdf |>
@@ -119,10 +119,8 @@ fun_plot_02_DataFile_02 <- function(objdf,intyear,strcountry)
 fun_plot_03_DataFile_03 <- function(objdf,intyear,strcountry)
 {
   
-
-  
   plot_03 <- ggplot() +
-    geom_sf(data = world_data, aes(fill = Deaths_Neoplasms, text = paste("Region:", name_long, "<br>Deaths:", Deaths_Neoplasms)), color = "black", size = 0.5) +
+    geom_sf(data = objdf, aes(fill = Deaths_Neoplasms), color = "black", size = 0.5) +
     scale_fill_gradient(low = "#fff7bc", high = "#cc4c02", name = NULL, labels = scales::label_number(suffix = "% ")) +
     labs(title = "Count of cancer cases per 100 people in the population") +
     theme_void() +
@@ -131,7 +129,7 @@ fun_plot_03_DataFile_03 <- function(objdf,intyear,strcountry)
       legend.title = element_blank(),
     )
   
-  plot_03 <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
+  #plot_03 <- ggplotly(p, tooltip = "text", dynamicTicks = TRUE, highlight = "plotly_selected")
   
   
 

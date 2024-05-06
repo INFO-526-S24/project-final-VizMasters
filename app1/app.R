@@ -6,7 +6,7 @@ if (!require("pacman"))
 pacman::p_load(tidyverse,
                here,
                janitor,
-               scales,shiny,shinythemes,shinyjs )
+               scales,shiny,shinythemes,shinyWidgets,shinyjs )
 
 library(tidyverse) 
 library(janitor)
@@ -14,6 +14,7 @@ library(scales)
 library(shiny)
 library(shinythemes)
 library(shinyjs)
+library(shinyWidgets)
 source("functions_data_wrangling.R")
 source("functions_draw_plots.R")
 
@@ -72,12 +73,13 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                   selectize = TRUE,
                   size = NULL
                   ),
-      selectInput("year", "Select Year", unique(c(df1$year, df2$year,df3$year)),
+      selectInput("year", "Select Year", unique(c(df1$year, df2$year, df3$Year)),
                   selected = NULL,
                   multiple = FALSE,
                   selectize = TRUE,
                   size = NULL),
-      uiOutput("causes_of_death_ui")
+      #uiOutput("causes_of_death_ui")
+      uiOutput("age_group_ui")
       
       
       
@@ -87,12 +89,12 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
         id = "mainTabset",
         tabPanel("Causes of death", plotOutput("plot1")),
         tabPanel("Death by cancer", plotOutput("plot2")),
-        tabPanel("Plot 3", plotOutput("plot3")),
+        tabPanel("Count of cancer cases per 100 people in the population", plotOutput("plot3")),
         tabPanel("Death rate by Age group", plotOutput("plot4")),
-        tabPanel("Population of Cancer by Age group", plotOutput("plot5")),
-        tabPanel("Plot 6", plotOutput("plot6")),
-        tabPanel("Plot 7", plotOutput("plot7")),
-        tabPanel("Plot 8", plotOutput("plot8"))
+        tabPanel("Population of Cancer by Age group", plotOutput("plot5"))
+        # tabPanel("Plot 6", plotOutput("plot6")),
+        # tabPanel("Plot 7", plotOutput("plot7")),
+        # tabPanel("Plot 8", plotOutput("plot8"))
       ),
     )
   )
@@ -112,14 +114,24 @@ server <- function(input, output) {
       return(df )
     }
   }
+  # Function to filter data
+  filter_data3 <- function(df) {
+      df %>%
+        filter(Year %in% input$year)
+    } 
+  # Function to filter data
+  filter_data5 <- function(df) {
+    df %>%
+      select(all_of(input$ageGroupInput))
+  } 
   
 
   # Plot functions
-  plot_data1 <- reactive({ fun_plot_01_DataFile_01(filter_data(df1),input$country,input$year, input$causes_of_death) })
+  plot_data1 <- reactive({ fun_plot_01_DataFile_01(filter_data(df1),input$country,input$year) })
   plot_data2 <- reactive({ fun_plot_02_DataFile_02(filter_data(df2),input$country,input$year) })
-  plot_data3 <- reactive({ fun_plot_03_DataFile_03(filter_data(df3),input$country,input$year) })
+  plot_data3 <- reactive({ fun_plot_03_DataFile_03(filter_data3(df3),input$country,input$year) })
   plot_data4 <- reactive({ fun_plot_04_DataFile_04(filter_data(df4), input$country, input$year) })
-  plot_data5 <- reactive({ fun_plot_05_DataFile_05(filter_data(df5)) })
+  plot_data5 <- reactive({ fun_plot_05_DataFile_05(filter_data5(df5)) })
   
   # Render plots
   output$plot1 <- renderPlot({
@@ -136,13 +148,12 @@ server <- function(input, output) {
       ggtitle(paste("Causes of death by cancers in", input$country, " for the year", input$year))
   })
   
-  output$plot3 <- renderImage({
+  output$plot3 <- renderPlot({
     plot_data <- plot_data3()
-    anim <- gganimate::animate(plot_data, nframes = 100, fps = 10, end_pause = 10)
-    outfile <- tempfile(fileext='.gif')
-    gganimate::anim_save(outfile, anim)
-    list(src = outfile, contentType = 'image/gif')
-  }, deleteFile = TRUE)
+    options(repr.plot.width = 8, repr.plot.height = 6)
+    plot_data +
+      ggtitle(paste("Causes of death by cancers in", " for the year", input$year))
+  })
   
   output$plot4 <- renderPlot({ plot_data4() })
   
@@ -156,8 +167,19 @@ server <- function(input, output) {
   
   
 
-  
-  
+  output$age_group_ui <- renderUI({
+    if (input$mainTabset == "Population of Cancer by Age group") {
+      list(
+        checkboxGroupInput("age_group_ui", "Select Age Groups:",
+                           choices = c("Under 5" = "prevalence_neoplasms_sex_both_age_under_5_number",
+                                       "5-14 years" = "prevalence_neoplasms_sex_both_age_5_14_years_number",
+                                       "15-49 years" = "prevalence_neoplasms_sex_both_age_15_49_years_number",
+                                       "50-69 years" = "prevalence_neoplasms_sex_both_age_50_69_years_number",
+                                       "70+ years" = "prevalence_neoplasms_sex_both_age_70_years_number"),
+                           selected = "prevalence_neoplasms_sex_both_age_15_49_years_number")
+      )
+    }
+  })
   
   
   

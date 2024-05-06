@@ -158,7 +158,7 @@ library(tidyverse)
   data <- read_csv("data/05_share-of-population-with-cancer-crude.csv")
   
   filtered_data <- data |>
-    filter(Year == 2000) |>
+    #filter(Year == 2000) |>
     select(Entity, Year, Deaths_Neoplasms = 'Current number of cases of neoplasms per 100 people, in both sexes aged all ages') %>%
     mutate(Deaths_Neoplasms = round(Deaths_Neoplasms, 3))  
   world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -184,7 +184,7 @@ fun_DataFile_04 <- function() {
       `50-69 years` = `Deaths - Neoplasms - Sex: Both - Age: 50-69 years (Rate)`,
       `15-49 years` = `Deaths - Neoplasms - Sex: Both - Age: 15-49 years (Rate)`,
       `5-14 years` = `Deaths - Neoplasms - Sex: Both - Age: 5-14 years (Rate)`,
-      `Under 5 years` = `Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)`  # Adjusted to match the exact column name from your dataset
+      `Under 5 years` = `Deaths - Neoplasms - Sex: Both - Age: Under 5 (Rate)`
     ) %>%
     select(country, year, `70+ years`, `50-69 years`, `15-49 years`, `5-14 years`, `Under 5 years`)
   
@@ -202,7 +202,7 @@ fun_DataFile_05 <- function()
   # Filtering the data for world and pivoting the data
   
   filtered_data <- neoplasm_data %>%
-    # filter(Entity == "World") %>%
+    filter(Entity == "World") %>%
     select(Year, ends_with("(Number)")) %>%
     pivot_longer(
       cols = -c( Year),  # Include the Entity column
