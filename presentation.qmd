@@ -1,7 +1,7 @@
 ---
 title: "Global Trends in Cancer Mortality: A Shiny App Exploration (1990-2019)"
 subtitle: "INFO 526 - Fall 2023 - Project Final"
-author: "VizMasters - Monica, Ajay, Miki, Kondapaneni Siva Rohit, Surya Vardhan Dama, Rohit Vatsava Kalakala"
+author: "VizMasters - Monica Tejaswi Kommareddy, Ajay, Miki, Kondapaneni Siva Rohit, Surya Vardhan Dama, Rohit Vatsava Kalakala"
 title-slide-attributes:
   data-background-image: images/Title_page_02.jpeg
   data-background-size: stretch
@@ -95,6 +95,10 @@ knitr::include_graphics("images/animated_plot1.gif")
 ```
 
 #### Insights
+
+-   The plot shows us various causes of death around the world from the year 1990 to the year 2019. Cardiovascular illness continues to be primary cause of death during the time period. It is closely followed by death by cancers.
+
+-   Certain viral diseases, like lower respiratory infections, are on the rise again. This suggests a changing pattern that could be influenced by aging populations and climate change. The data might show improvements in immunization rates and healthcare accessibility that have led to benefits in some areas.
 :::
 
 ## Analysis 2
@@ -108,6 +112,12 @@ knitr::include_graphics("images/animated_plot2.gif")
 ```
 
 #### Insights
+
+-   The plot showcases deaths by different types of cancers around the world over the time period 1990-2019. Lung cancer consistently dominates as the leading cause of cancer deaths globally, indicating a persistent and significant public health challenge over the entire period from 1990 to 2019.
+
+-   Liver cancer exhibits an initial increase in mortality rates until the late 1990s, followed by a noticeable decline in the early 2000s, suggesting potential success in interventions or treatments targeting this specific cancer type.
+
+-   Mortality rates due to stomach cancer remain relatively constant throughout the observed period, contrasting with the overall increasing trend seen in other cancer types, emphasizing the need for targeted research and interventions to address this specific cancer's impact.
 :::
 
 ## Analysis 3
@@ -158,6 +168,12 @@ plotly_plot_3
 ```
 
 #### Insights
+
+-   A notable inflection point is observed after the 2000s, particularly evident in the age group of 50-69 years, indicating a significant acceleration in mortality rates during this period.
+
+-   Mortality rates in both the under 5 and 5-14 age groups show striking similarity, suggesting comparable vulnerability to cancer-related causes within these younger age brackets.
+
+-   While both the 15-49 and 70+ age groups exhibit a consistent upward trend in mortality rates, they converge around 2010. However, following this convergence, the 70+ age group experiences a rapid increase, surpassing the 15-49 age group, highlighting the disproportionate burden of cancer-related mortality among older populations.
 :::
 
 ## Analysis 4
@@ -171,6 +187,10 @@ knitr::include_graphics("images/animated_plot3.gif")
 ```
 
 #### Insights
+
+-   Over the period spanning from 1990 to 2019, the 70+ age group emerges as the demographic with the highest contribution to cancer-related mortality, surpassing all other age groups.
+
+-   Notably, beginning from the early 2000s, both the 50-69 and 70+ age groups exhibit a discernible decline in mortality rates, signaling a positive shift in the trend of cancer-related deaths within these older age groups.
 :::
 
 ## Analysis 5
@@ -251,9 +271,8 @@ p
 
 ## Conclusion
 
-
 ## References
-- Title background image: <https://www.htworld.co.uk/news/research-news/injectible-gel-developed-to-deliver-cancer-drugs-for-solid-tumours/>
 
-##
+-   Title background image: <https://www.htworld.co.uk/news/research-news/injectible-gel-developed-to-deliver-cancer-drugs-for-solid-tumours/>
 
+## 
