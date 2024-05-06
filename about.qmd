@@ -1,15 +1,19 @@
 ---
-title: "About"
+title: "Global Trends in Cancer Mortality: A Shiny App Exploration (1990-2019)"
 format: html
 editor: visual
 ---
 
-This project was developed by **\[Team Name\]** For [INFO 526 - Data Analysis & Visualization](https://datavizaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
+This project was developed by **\[VizMasters]** For [INFO 526 - Data Analysis & Visualization](https://datavizaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
 
--   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
+-   Surya Vardhan Dama: 1st year MS in Data Science
 
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
+-   Kondapaneni Siva Rohit: 1st year MS in Data science
 
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
+-   Rohit Vatsava Kalakala: 1st year MS in Data Science
 
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Miki Katyal: 2nd Year MS in Information Science
+
+-   Ajay Kumar: 2nd Year MS in Information Science
+
+-   Monica Tejaswi Kommareddy: 1st year MS in Data Science
